@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+
+/* ================================
+   FONT SYSTEM
+================================ */
+
+.font-body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+.font-heading {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        Inter,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+
+.crypto-navbar {
+    width: 100%;
+    height: 42px;
+    overflow: hidden;
+    background: #050505;
+    color: white;
+    border-bottom: 1px solid #151515;
+    display: flex;
+    align-items: center;
+
+    /* Body font */
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+
+/* The entire moving area */
+.crypto-track {
+    display: flex;
+    width: max-content;
+    animation: crypto-scroll 35s linear infinite;
+}
+
+
+/* Each complete copy of the ticker */
+.crypto-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+
+/* Individual crypto */
+.crypto-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 28px;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+
+/* Small icon */
+.crypto-icon {
+    color: #dcb52f;
+    font-size: 13px;
+}
+
+
+/* Symbol e.g. BTC */
+.crypto-symbol {
+    color: #eeeeee;
+    font-weight: 500;
+}
+
+
+/* Price */
+.crypto-price {
+    color: #e0b92f;
+    font-weight: 600;
+}
+
+
+/* Red percentage */
+.crypto-change {
+    color: #ff4141;
+    font-weight: 500;
+}
+
+
+/* Separator */
+.crypto-divider {
+    color: #444;
+    margin-left: 8px;
+}
+
+
+/* Continuous movement */
+@keyframes crypto-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-30%);
+    }
+}
+
+
+/* Pause when user hovers */
+.crypto-navbar:hover .crypto-track {
+    animation-play-state: paused;
+}
