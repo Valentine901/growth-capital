@@ -12,7 +12,7 @@ const HomePg = () => {
 
 
   return (
-    <section id="home" className="home-hero min-h-screen w-full pt-32 pb-24 relative">
+    <section id="home" className="home-hero min-h-screen w-full pt-42 pb-24  relative">
       {/* Background network pattern */}
       <div className="hero-network"></div>
 

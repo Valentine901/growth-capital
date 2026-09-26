@@ -11,6 +11,7 @@ import OurTeam from "./pages/OurTeam";
 import Contact from "./pages/Contact";
 import Footer from "./components/Footer";
 import { MessageCircle } from "lucide-react";
+import ScrollReveal from "./components/ScrollReveal";
 
 const GrowthGeneralPage = () => {
 
@@ -19,32 +20,51 @@ const GrowthGeneralPage = () => {
             <CryptoNavbar />
 
             <Navbar />
+
             {/* home */}
-            <HomePg />
+            <ScrollReveal>
+                <HomePg />
+            </ScrollReveal>
 
             {/* about */}
-            <About />
+            <ScrollReveal>
+                <About />
+            </ScrollReveal>
 
             {/* portfolio */}
-            <Portfolio />
+            <ScrollReveal>
+                <Portfolio />
+            </ScrollReveal>
 
             {/* plans */}
-            <Plans />
+            <ScrollReveal>
+                <Plans />
+            </ScrollReveal>
 
             {/* Assurance */}
-            <Assurance />
+            <ScrollReveal>
+                <Assurance />
+            </ScrollReveal>
 
             {/* Guide */}
-            <Guide />
+            <ScrollReveal>
+                <Guide />
+            </ScrollReveal>
 
             {/* Our Team */}
-            <OurTeam />
+            <ScrollReveal>
+                <OurTeam />
+            </ScrollReveal>
 
             {/* Testimonial */}
-            <Testimonial />
+            <ScrollReveal>
+                <Testimonial />
+            </ScrollReveal>
 
             {/* Contact */}
-            <Contact />
+            <ScrollReveal>
+                <Contact />
+            </ScrollReveal>
 
             {/* Footer */}
             <Footer />

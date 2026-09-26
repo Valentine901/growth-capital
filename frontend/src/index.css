@@ -1,9 +1,25 @@
 @import "tailwindcss";
 
+body {
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+}
 
-/* ================================
-   FONT SYSTEM
-================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom keyframe that transitions both opacity and position smoothly */
+@keyframes fluidScrollUpReveal {
+  from {
+    opacity: 0.1;
+    transform: translateY(60px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
 .font-body {
     font-family:
