@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session 
 from sqlalchemy import select 
 from models.tables import User 
-from schemas.user import CreateUserSchema
 import uuid 
 
 

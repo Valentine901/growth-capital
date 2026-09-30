@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from dependencies.security import BaseSecurity
 from error_wrapper import BaseErrorException
-from crud.user import BaseUser
+from crud.invest.user import BaseUser
 from models.tables import VerificationToken
 from datetime import timedelta, timezone, datetime
 import uuid, random 
@@ -38,10 +38,10 @@ class BaseAuth:
         if not token_data:
             BaseErrorException.bad_request(detail="Invalid verification token")
         
-        if token_data.token_code != code:
+        if token_data.token_code != code: #type: ignore
             BaseErrorException.bad_request(detail="Incorrect 6-digit verification code.")
 
-        if datetime.now(timezone.utc) > token_data.expires_at:
+        if datetime.now(timezone.utc) > token_data.expires_at: #type: ignore
             db.delete(token_data)
             db.commit()
             BaseErrorException.bad_request(detail="This code has expired. Please request a new one.")
@@ -54,8 +54,8 @@ class BaseAuth:
         if not token or token is None:
             BaseErrorException.unauthorized(detail="Access token is missing")
         
-        payload = BaseSecurity.decode_token(token)
-        user_id_str = payload.get("sub")
+        payload = BaseSecurity.decode_token(token) #type: ignore
+        user_id_str = payload.get("sub") #type: ignore
         user_id = uuid.UUID(user_id_str)
 
 

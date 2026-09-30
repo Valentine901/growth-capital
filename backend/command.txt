@@ -1,0 +1,4 @@
+"To delete all model tables: DROP SCHEMA public CASCADE;
+"To create all model tables: CREATE SCHEMA public;
+DROP TYPE carmodelenum CASCADE;
+DROP TABLE teslar_car CASCADE;

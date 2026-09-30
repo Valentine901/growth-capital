@@ -6,13 +6,13 @@ import Footer from "../../tesla/components/Footer"
 
 const HomePage = () => {
   return (
-    <>
+    <div className="w-full">
       <Navbar />
       <Home1 />
       <Home2 />
       <Home3 />
       <Footer />
-    </>
+    </div>
   )
 }
 

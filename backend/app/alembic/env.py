@@ -4,6 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from settings.database_engine import Base 
 from models.tables import *
+from models.tesla_table import *
 
 from alembic import context
 

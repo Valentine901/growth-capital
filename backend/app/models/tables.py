@@ -4,7 +4,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from settings.database_engine import Base
 import uuid 
 from models.enums import UserRole, PaymentMethods
-from typing import List
+from typing import List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from models.tesla_table import Vehicle, TestDrive, ConfigureTesla
 
 
 class User(Base):
@@ -26,6 +29,9 @@ class User(Base):
     deposits: Mapped[List["Deposit"]] = relationship("Deposit", back_populates="user")
     withdrawals: Mapped[List["WithDrawal"]] = relationship("WithDrawal", back_populates="user")
     verification_codes: Mapped["VerificationToken"] = relationship("VerificationToken", back_populates="user")
+    vehicles: Mapped[List["Vehicle"]] = relationship("Vehicle", back_populates="user")
+    test_drives: Mapped[List["TestDrive"]] = relationship("TestDrive", back_populates="user")
+    configurators: Mapped[List["ConfigureTesla"]] = relationship("ConfigureTesla", back_populates="user")
 
 class VerificationToken(Base):
     __tablename__ = "verification_tokens"
