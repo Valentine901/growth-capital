@@ -33,7 +33,12 @@ class PackagesEnum(str, enum.Enum):
     TRACK = "Track"
 
 class PaymentMethod(str, enum.Enum):
-    TRANSFER = "Transfer"
     BITCOIN = "Bitcoin"
     ETHEREUM = "Ethereum"
-    USDT = "Usdt"
+    BNB = "bnb"
+    TRON = "Tron"
+
+class PaymentStatus(str, enum.Enum):
+    SUCCESS = "success"
+    PENDING = "pending"
+    DECLINED = "declined"

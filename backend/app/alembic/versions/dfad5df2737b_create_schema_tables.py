@@ -1,8 +1,8 @@
-"""initial_setup
+"""Create schema tables
 
-Revision ID: 9c19a81a8d3b
+Revision ID: dfad5df2737b
 Revises: 
-Create Date: 2026-09-29 19:40:05.469551
+Create Date: 2026-10-02 03:16:52.946507
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '9c19a81a8d3b'
+revision: str = 'dfad5df2737b'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -36,6 +36,23 @@ def upgrade() -> None:
     sa.Column('message', sa.Text(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('tesla_messages',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('full_name', sa.String(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
+    sa.Column('content', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_tesla_messages_id'), 'tesla_messages', ['id'], unique=True)
+    op.create_table('tesla_users',
+    sa.Column('id', sa.UUID(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('password', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
+    )
+    op.create_index(op.f('ix_tesla_users_id'), 'tesla_users', ['id'], unique=True)
     op.create_table('users',
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('first_name', sa.String(length=50), nullable=False),
@@ -83,8 +100,9 @@ def upgrade() -> None:
     sa.Column('desc', sa.String(), nullable=False),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('image', sa.String(), nullable=False),
+    sa.Column('model', sa.Enum('TESLA_NEURALINK_V1', 'TESLA_NEURALINK_X', 'TESLA_NEURALINK_GT', name='carmodelenum'), nullable=False),
     sa.Column('user_id', sa.UUID(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['tesla_users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tesla_cars_id'), 'tesla_cars', ['id'], unique=True)
@@ -97,7 +115,7 @@ def upgrade() -> None:
     sa.Column('packages', sa.Enum('PREMIUM_INTERIOR', 'ENHANCED_AUTOPILOT', 'FULL_SELF_DRIVING', 'COLD_WEATHER', 'TOWING', 'TRACK', name='packagesenum'), nullable=False),
     sa.Column('estimated_total', sa.Float(), nullable=False),
     sa.Column('user_id', sa.UUID(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['tesla_users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tesla_configurators_id'), 'tesla_configurators', ['id'], unique=True)
@@ -110,11 +128,13 @@ def upgrade() -> None:
     sa.Column('preferred_date', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('preferred_time', sa.DateTime(), nullable=False),
     sa.Column('preferred_location', sa.String(), nullable=False),
-    sa.Column('additional_notes', sa.String(), nullable=False),
+    sa.Column('zip_code', sa.String(), nullable=False),
     sa.Column('estimated_total', sa.Float(), nullable=False),
-    sa.Column('payment_method', sa.Enum('TRANSFER', 'BITCOIN', 'ETHEREUM', 'USDT', name='paymentmethod'), nullable=False),
+    sa.Column('crypto_currency', sa.Enum('BITCOIN', 'ETHEREUM', 'BNB', 'TRON', name='paymentmethod'), nullable=True),
+    sa.Column('payment_status', sa.Enum('SUCCESS', 'PENDING', 'DECLINED', name='paymentstatus'), nullable=False),
+    sa.Column('crypto_address', sa.String(), nullable=True),
     sa.Column('user_id', sa.UUID(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['tesla_users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_test_drives_id'), 'test_drives', ['id'], unique=True)
@@ -164,6 +184,10 @@ def downgrade() -> None:
     op.drop_table('investments')
     op.drop_table('deposits')
     op.drop_table('users')
+    op.drop_index(op.f('ix_tesla_users_id'), table_name='tesla_users')
+    op.drop_table('tesla_users')
+    op.drop_index(op.f('ix_tesla_messages_id'), table_name='tesla_messages')
+    op.drop_table('tesla_messages')
     op.drop_table('messages')
     op.drop_table('investment_plans')
     # ### end Alembic commands ###

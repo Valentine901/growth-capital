@@ -6,13 +6,17 @@ from pathlib import Path
 from routers.invest.user import router as user_router
 
 # tesla
+from routers.tesla.tesla_user import router as tesla_user_router
 from routers.tesla.vehicle import router as vehicle_router
 
 app = FastAPI()
 
 app.include_router(user_router)
 
+# tesla router
+app.include_router(tesla_user_router)
 app.include_router(vehicle_router)
+
 @app.get("/")
 async def get_data():
     return {"message": "Valentine welcome"}

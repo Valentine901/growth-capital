@@ -5,6 +5,7 @@ from sqlalchemy import select
 from dependencies.security import BaseSecurity
 from error_wrapper import BaseErrorException
 from crud.invest.user import BaseUser
+from crud.tesla.tesla_user import BaseTeslaUser
 from models.tables import VerificationToken
 from datetime import timedelta, timezone, datetime
 import uuid, random 
@@ -60,6 +61,23 @@ class BaseAuth:
 
 
         user = BaseUser.get_user_by_id(user_id=user_id, db=db)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        return user
+    
+    @staticmethod
+    def get_tesla_current_user(request: Request, db: Session = Depends(get_db)):
+        token = request.cookies.get("access_token")
+
+        if not token or token is None:
+            BaseErrorException.unauthorized(detail="Access token is missing")
+        
+        payload = BaseSecurity.decode_token(token) #type: ignore
+        user_id_str = payload.get("sub") #type: ignore
+        user_id = uuid.UUID(user_id_str)
+
+
+        user = BaseTeslaUser.get_user(user_id=user_id, db=db)
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         return user

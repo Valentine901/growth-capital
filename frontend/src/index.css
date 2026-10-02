@@ -1,4 +1,18 @@
+@import url('https://googleapis.com');
 @import "tailwindcss";
+
+
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em; /* Gives it that tight, premium look */
+  }
+}
+
 
 body {
   font-family: 'Montserrat', 'Poppins', sans-serif;
@@ -7,6 +21,27 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+@theme {
+  --font-heading: "Geist", "sans-serif";
+  --font-body: "Inter", sans-serif;
+  --font-alt: "Open Sans", sans-serif;
+  --font-sans: "Geist", "sans-serif";
+  --font-heading: "Geist", "sans-serif";
+
+  --animate-slide-up-fade: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes slideUpFade {
+    0% {
+      transform: translateY(34px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1.5;
+    }
+  }
 }
 
 /* Custom keyframe that transitions both opacity and position smoothly */
@@ -147,3 +182,6 @@ html {
 .crypto-navbar:hover .crypto-track {
     animation-play-state: paused;
 }
+
+
+
