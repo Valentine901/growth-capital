@@ -20,23 +20,19 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-black">Vehicles</h4>
-          <ul className="flex flex-col gap-2.5">
-            <li><a href="/vehicles/v1" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">TASLA NEURALINK V1</a></li>
-            <li><a href="/vehicles/x" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">TASLA NEURALINK X</a></li>
-            <li><a href="/vehicles/gt" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">TASLA NEURALINK GT</a></li>
-            <li><a href="/compare" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Compare Models</a></li>
-            <li><a href="/configure" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Build Yours</a></li>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-black">Build Yours</h4>
+         <ul>
+            <li><a href="/configurator" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Configure your car</a></li>
           </ul>
         </div>
 
         <div className="flex flex-col gap-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-black">Experience</h4>
           <ul className="flex flex-col gap-2.5">
-            <li><a href="/charging" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Charging & Energy</a></li>
-            <li><a href="/trips" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Trip Planning</a></li>
-            <li><a href="/technology" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Technology</a></li>
-            <li><a href="/app" className="text-sm text-gray-600 hover:text-blue-800 transition-colors flex items-center gap-1">Mobile App <ArrowUpRight size={14} /></a></li>
+            <li><a href="/vehicles" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Vehicles</a></li>
+            <li><a  className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Trip </a></li>
+            <li><a  className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Technology</a></li>
+            <li><a  className="text-sm text-gray-600 hover:text-blue-800 transition-colors flex items-center gap-1">Mobile App <ArrowUpRight size={14} /></a></li>
             <li><a href="/test-drive" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Test Drive</a></li>
           </ul>
         </div>
@@ -44,11 +40,11 @@ const Footer = () => {
         <div className="flex flex-col gap-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-black">Support</h4>
           <ul className="flex flex-col gap-2.5">
-            <li><a href="/service" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Service</a></li>
-            <li><a href="/shop" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Shop</a></li>
+            <li><a href="/vehicles" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Service</a></li>
+            <li><a  className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Shop</a></li>
             <li><a href="/account" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Account</a></li>
-            <li><a href="/contact" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Contact Us</a></li>
-            <li><a href="/legal" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Legal</a></li>
+            <li><a href="/support" className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Contact Us</a></li>
+            <li><a className="text-sm text-gray-600 hover:text-blue-800 transition-colors">Legal</a></li>
           </ul>
         </div>
       </div>

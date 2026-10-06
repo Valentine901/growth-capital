@@ -1,16 +1,23 @@
 import { useAuth } from "../context/AuthContext"
+import { Navigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const ProtectedRoute = ({ children }) => {
     const { userData, loading } = useAuth();
+    
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+                <p className="text-gray-600 font-heading animate-spin font-bold">
+                    <Loader2 size={64} />
+                </p>
+            </div>
+        );
+    }
 
-    if (loading || userData === null) return <div className="w-full min-h-screen flex items-center justify-center text-center bg-gray-200">
-        <h2 className="text-center text-blue-600 text-xl font-semibold">Loading...</h2>
-    </div>
-    return (
-        <div>
-            {children}
-        </div>
-    )
+    if(!userData || userData === null) return <Navigate to="/account" />;
+
+    return children;
 }
 
 export default ProtectedRoute

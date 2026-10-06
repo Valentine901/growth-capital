@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = os.getenv("ALGORITHM")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES") )
     REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS"))
+    NOWPAYMENTS_API_KEY: str = os.getenv("NOWPAYMENTS_API_KEY")
+    NOWPAYMENTS_URL: str = os.getenv("NOWPAYMENTS_URL")
 
 
 

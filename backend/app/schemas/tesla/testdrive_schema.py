@@ -13,7 +13,6 @@ class BookingCreate(BaseModel):
     preferred_location: str 
     zip_code: str 
     estimated_total: float
-    user_id: uuid.UUID
 
 
 class BookingResponse(BaseModel):

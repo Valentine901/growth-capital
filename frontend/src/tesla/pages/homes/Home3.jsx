@@ -68,7 +68,7 @@ const Home3 = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto shrink-0">
-            <a href="/configure" className="flex items-center justify-center gap-3 text-gray-100 font-semibold text-base bg-blue-800 py-3.5 px-8 rounded-xl hover:bg-blue-900 transition-colors duration-200 shadow-md group">
+            <a href="/configurator" className="flex items-center justify-center gap-3 text-gray-100 font-semibold text-base bg-blue-800 py-3.5 px-8 rounded-xl hover:bg-blue-900 transition-colors duration-200 shadow-md group">
               <span>Build Yours</span>
               <ArrowRight size={20} className="transform transition-transform duration-200 group-hover:translate-x-1" />
             </a>

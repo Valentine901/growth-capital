@@ -2,13 +2,16 @@ import Navbar from "../components/Navbar";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import Footer from "../components/Footer";
-
+import { MessageCircleQuestion } from "lucide-react";
 
 const Authentication = () => {
     return (
         <div>
             <Navbar />
             <Account />
+            <a href="/support" className="fixed top-165 right-5 text-blue-800">
+                <MessageCircleQuestion className="hover:scale-110 transition-all duration-150" size={64} />
+            </a>
             <Footer />
         </div>
     )
@@ -31,7 +34,7 @@ const Account = () => {
                 <Login />
 
                 {/* register */}
-               <Register />
+                <Register />
             </div>
         </section>
     )

@@ -23,7 +23,7 @@ DatabaseEngine = Annotated[Session, Depends(get_db)]
 async def get_logged_in_user(current_user: CurrentUser):
     return current_user
 
-@router.get("/refresh-token")
+@router.post("/refresh-token")
 async def api_refresh_token(request: Request, response: Response):
     token = request.cookies.get("refresh_token")
     if token is None:
@@ -41,7 +41,7 @@ async def api_refresh_token(request: Request, response: Response):
         response.set_cookie(key="access_token", value=str(new_access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
         return {"message":"Token refreshed successfully"}
 
-@router.post("/user-register")
+@router.post("/user-register", response_model=UserResponseSchema)
 async def api_create_user(data: CreateUserSchema, response: Response, db: DatabaseEngine):
     data_dict = data.model_dump()
 
@@ -63,10 +63,10 @@ async def api_create_user(data: CreateUserSchema, response: Response, db: Databa
     response.set_cookie(key="access_token", value=str(access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
-    return {"message": "Registered success"} 
+    return new_user
 
 
-@router.post("/user-login")
+@router.post("/user-login", response_model=UserResponseSchema)
 async def api_login_user(data: UserLoginSchema, response: Response, db: DatabaseEngine):
     user = BaseTeslaUser.get_user_by_email(email=data.email, db=db)
     if user is None:
@@ -81,4 +81,4 @@ async def api_login_user(data: UserLoginSchema, response: Response, db: Database
     response.set_cookie(key="access_token", value=str(access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
-    return {"message": "Login success"}
+    return user

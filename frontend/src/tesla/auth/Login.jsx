@@ -1,22 +1,33 @@
 import { useState, useEffect } from "react";
 import { LogInIcon } from "lucide-react";
 import { API } from "../../constants/API";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const { SaveUserData } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError("");
+        setSuccess("");
 
         try {
-            await API.post("/tesla-user/user-login", { email: email, password: password });
-            alert("Login success");
+            const response = await API.post("/tesla-user/user-login", { email: email, password: password });
+            SaveUserData(response.data);
+            setSuccess("Authenticated successfully");
+            setEmail("");
+            setPassword("");
+            navigate("/test-drive");
         } catch (err) {
             if (err.response) {
                 setError(err.response.data.detail);
@@ -33,12 +44,13 @@ const Login = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if(error) {
+            if(error || success) {
                 setError("");
+                setSuccess("");
             }
         }, 3000)
         return () => clearTimeout(timer);
-    }, [error])
+    }, [error, success]);
 
     return (
         <div className="flex flex-col gap-3 p-6 rounded-lg bg-gray-100/90 max-w-2xl lg:max-w-md mx-auto w-full font-body">
@@ -53,6 +65,9 @@ const Login = () => {
             {/* error message section */}
            {error && <div className="my-4 p-3 rounded-md bg-red-500/15 duration-300 transition-all">
                 <span className="text-red-600 text-lg text-center">{error}</span>
+            </div>}
+           {success && <div className="my-4 p-3 rounded-md bg-green-500/15 duration-300 transition-all">
+                <span className="text-green-600 text-lg text-center">{success}</span>
             </div>}
 
             <form onSubmit={handleSubmit} 

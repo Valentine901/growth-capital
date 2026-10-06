@@ -6,7 +6,6 @@ import HomePage from "./tesla/leads/HomePage";
 import Vehicles from "./tesla/leads/Vehicles";
 import Configurator from "./tesla/leads/Configurator";
 import TestDrive from "./tesla/leads/TestDrive";
-import Contact from "./tesla/leads/Contact";
 import Support from "./tesla/leads/Support";
 import Authentication from "./tesla/leads/Account";
 import ProtectedRoute from "./tesla/auth/ProtectedRoute";
@@ -25,13 +24,13 @@ const App = () => {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/configurator" element={<Configurator />} />
         <Route path="/test-drive" element={<TestDrive />} />
-        <Route path="/testdrive-booking" element={
+        <Route path="/testdrive-payment-address" element={
           <ProtectedRoute>
             <TestDrivePayment />
           </ProtectedRoute>
         } />
         <Route path="/support" element={<Support />} />
-        <Route path="/contact" element={<Contact />} />
+       
         <Route path="/account" element={<Authentication />} />
       </Route>
 

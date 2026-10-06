@@ -68,6 +68,7 @@ const AuthProvider = ({ children }) => {
             const response = await API.get("/tesla-user/me");
             SaveUserData(response.data);
             setUserData(response.data);
+            console.log(response.data);
             return response.data;
 
         } catch (error) {
@@ -116,34 +117,13 @@ const AuthProvider = ({ children }) => {
     }, [RefreshToken])
 
     useEffect(() => {
-        const initializeAuth = async () => {
-            setLoading(true);
-
-            const savedUser = localStorage.getItem("user");
-            if (!savedUser){
-                setLoading(false);
-                return;
-            }
-
-            try{
-                await Promise.all([
-                getCurrentUser()
-            ]);
-            } catch (error) {
-                setErrorMessage(error);
-            } finally{
-                setLoading(false);
-            }
-
-    }
-
-    initializeAuth();
-    }, [getCurrentUser])
+        getCurrentUser()
+    }, [])
 
 
 
     return (
-        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser }}>
+        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser, SaveUserData, handleAxiosError }}>
             {children}
         </AuthContext.Provider>
     )
