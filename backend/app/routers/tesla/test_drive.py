@@ -57,7 +57,7 @@ async def book_test_drive(booking_in: BookingCreate, current_user: CurrentUser, 
     if response is None:
         BaseErrorException.internal_server_error("Crypto payment gateway did not return a response.")
         return
-    print(response.text)
+    # print(response.text)
     if response.status_code != 201:
         BaseErrorException.bad_request("Crypto gateway address generation failed.")
         

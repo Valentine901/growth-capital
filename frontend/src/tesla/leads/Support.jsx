@@ -1,7 +1,9 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Mail, Phone, Clock, MapPin, ShoppingCart, Truck, Settings, Lock, MessageCircle, HandHelping, LifeBuoy, MessageCircleQuestion } from "lucide-react";
-
+import { useState, useEffect } from "react";
+import { API } from "../../constants/API";
+import { useAuth } from "../context/AuthContext";
 
 const Support = () => {
   return (
@@ -16,7 +18,58 @@ const Support = () => {
 export default Support;
 
 const Section = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("")
+  const { handleAxiosError } = useAuth();
+
+
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("")
+    setError("");
+
+    const payload = {
+      full_name: fullName,
+      email: email,
+      phone: phone,
+      content: content,
+    }
+
+    try {
+      const response = await API.post("/support/send-message", payload);
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setContent("");
+      setMessage("Thank you for reaching out. Your message has been received, and our support team will get back to you shortly.");
+
+
+    } catch (error) {
+      handleAxiosError(error.response.data.detail);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (error || message) {
+        setError("");
+        setMessage("");
+      }
+    }, 3000)
+    return () => clearTimeout(timer);
+  }, [error, message]);
+
   return (
+
     <section className="w-full min-h-screen font-body bg-white pb-24">
       <div className="w-full items-center flex flex-col gap-6 mb-5 bg-gradient-to-b from-blue-100 to-white pt-52 text-center">
         <span className="text-black text-6xl font-bold">Customer Support</span>
@@ -236,34 +289,43 @@ const Section = () => {
           </div>
 
           <div className="shadow-sm p-4 rounded-xl w-full max-w-xl">
-            <form className="flex flex-col gap-2">
+            {/* error message section */}
+            {error && <div className="mt-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+              <span className="mt-4 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg p-3">{error}</span>
+            </div>}
+            {message && <div className="my-4 p-3 rounded-md bg-green-500/15 duration-300 transition-all">
+              <span className="text-green-600 text-lg text-center">{message}</span>
+            </div>}
+            <form onSubmit={sendMessage} className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <label htmlFor="full name">Full Name*</label>
-                <input type="text" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
+                <input value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
               </div>
               <div className="flex flex-col gap-1">
                 <label htmlFor="Email address">Email Address*</label>
-                <input type="text" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
               </div>
               <div className="flex flex-col gap-1">
                 <label htmlFor="Phone number">Phone Number*</label>
-                <input type="text" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
+                <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
               </div>
-              <div className="flex flex-col gap-1">
+              {/* <div className="flex flex-col gap-1">
                 <label htmlFor="subject">Subject*</label>
                 <input type="text" required className="px-3 py-2 rounded-lg border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
-              </div>
+              </div> */}
               <div className="flex flex-col gap-1">
                 <label htmlFor="subject">Message*</label>
-                <textarea name="message" id="message" required className="px-3 py-8 rounded-md border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
+                <textarea value={content} onChange={(e) => setContent(e.target.value)} name="message" id="message" required className="px-3 py-8 rounded-md border outline-none focus:border-blue-800 focus:ring-2 focus:ring-blue-800 ring-offset-2 focus:ring-offset-0 border-gray-600/20" />
               </div>
               <div className="w-full">
-                <button className="text-md text-gray-100 font-bold py-3 w-full bg-blue-900/98 rounded-md hover:bg-blue-900 transition-all duration-300 ">Send Message</button>
+                <button disabled={loading} className="text-md text-gray-100 font-bold py-3 w-full bg-blue-900/98 rounded-md hover:bg-blue-900 transition-all duration-300 ">
+                  {loading ? "Sending..." : "Send Message"}
+                </button>
               </div>
             </form>
-            <a href="/support" className="fixed top-165 right-5 text-blue-800">
+            {/* <a href="/support" className="fixed top-165 right-5 text-blue-800">
               <MessageCircleQuestion className="hover:scale-110 transition-all duration-150" size={64} />
-            </a>
+            </a> */}
           </div>
         </div>
 

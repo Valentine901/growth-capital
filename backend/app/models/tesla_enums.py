@@ -1,10 +1,10 @@
 import enum 
 
 class WheelsEnum(str, enum.Enum):
-    AERO_19 = "AERO 19"
-    SPORT_20 = "SPORTS 20"
-    PERFORMANCE_21 = "PERFORMANCE 21"
-    TURBINE_22 = "TURBINE 22"
+    AERO_19 = '19" Aero Wheels'
+    SPORT_20 = '20" Cyber Wheels'
+    PERFORMANCE_21 = '21" Performance Wheels'
+    TURBINE_22 = '22" Turbine Wheels',
 
 class CarModelEnum(str, enum.Enum):
     TESLA_NEURALINK_V1 = "TESLA NEURALINK V1"
@@ -12,25 +12,25 @@ class CarModelEnum(str, enum.Enum):
     TESLA_NEURALINK_GT = "TESLA NEURALINK GT"
 
 class InteriorColorEnum(str, enum.Enum):
-    ALL_BLACK = "ALL BLACK"
-    BLACK_AND_WHITE = "BLACK AND WHITE"
-    PREMIUM_TAN = "PREMIUM TAN"
+    ALL_BLACK = "All Black"
+    BLACK_AND_WHITE = "Black and White"
+    PREMIUM_TAN = "Premium Tan"
 
 class ExteriorColorEnum(str, enum.Enum):
-    DEEP_BLUE_METALLIC = "DEEP BLUE METALLIC"
-    PEARL_WHITE_MULTI_COAT = "PEARL WHITE MULTI COAT"
-    SOLID_BLACK = "SOLID BLACK"
-    RED_MULTI_COAT = "RED MULTI COAT"
-    MIDNIGHT_SHOW_METALLIC = "MIDNIGHT SILVER METALLIC"
-    QUANTUM_GRAY = "QUANTUM GRAY"
+    DEEP_BLUE_METALLIC = "Deep Blue Metallic"
+    PEARL_WHITE_MULTI_COAT = "Pearl White Multi Coat"
+    SOLID_BLACK = "Solid Black"
+    RED_MULTI_COAT = "Red Multi Coat"
+    MIDNIGHT_SHOW_METALLIC = "Midnight Silver Metallic"
+    QUANTUM_GRAY = "Quantum Gray"
 
 class PackagesEnum(str, enum.Enum):
-    PREMIUM_INTERIOR = "PREMIUM INTERIOR"
-    ENHANCED_AUTOPILOT = "ENHANCE PILOT"
-    FULL_SELF_DRIVING = "Full Self Driving"
-    COLD_WEATHER = "Cold Weather"
-    TOWING = "Towing"
-    TRACK = "Track"
+    PREMIUM_INTERIOR = 'Premium Interior Package'
+    ENHANCED_AUTOPILOT = 'Enhanced Autopilot'
+    FULL_SELF_DRIVING = 'Full Self-Driving Capability'
+    COLD_WEATHER = 'Cold Weather Package'
+    TOWING = 'Towing Package'
+    TRACK = 'Track Package'
 
 class PaymentMethod(str, enum.Enum):
     BITCOIN = "Bitcoin"

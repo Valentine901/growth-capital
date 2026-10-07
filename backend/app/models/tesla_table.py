@@ -36,9 +36,12 @@ class ConfigureTesla(Base):
     model: Mapped[CarModelEnum] = mapped_column(Enum(CarModelEnum), default=CarModelEnum.TESLA_NEURALINK_V1, nullable=False)
     interior_color: Mapped[InteriorColorEnum] = mapped_column(Enum(InteriorColorEnum), default=InteriorColorEnum.ALL_BLACK, nullable=False)
     exterior_color: Mapped[ExteriorColorEnum] = mapped_column(Enum(ExteriorColorEnum), default=ExteriorColorEnum.DEEP_BLUE_METALLIC, nullable=False)
-    wheel: Mapped[WheelsEnum] = mapped_column(Enum(WheelsEnum), default=WheelsEnum.AERO_19 ,nullable=False)
+    wheel: Mapped[WheelsEnum] = mapped_column(Enum(WheelsEnum), default=WheelsEnum.AERO_19, nullable=False)
     packages: Mapped[PackagesEnum] = mapped_column(Enum(PackagesEnum), default=PackagesEnum.COLD_WEATHER ,nullable=False)
     estimated_total: Mapped[float] = mapped_column(Float, nullable=False)
+    crypto_currency: Mapped[PaymentMethod] = mapped_column(Enum(PaymentMethod), default=PaymentMethod.BITCOIN, nullable=True)
+    payment_status: Mapped[PaymentStatus] = mapped_column(Enum(PaymentStatus), default=PaymentStatus.PENDING)
+    crypto_address: Mapped[str] = mapped_column(String, nullable=True)
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("tesla_users.id"))
     user: Mapped["TeslaUser"] = relationship("TeslaUser", back_populates="configurators")
 
