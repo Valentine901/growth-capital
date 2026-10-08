@@ -8,7 +8,6 @@ from routers.invest.user import router as user_router
 # tesla
 from routers.tesla.tesla_user import router as tesla_user_router
 from routers.tesla.test_drive import router as test_drive_router
-from routers.tesla.vehicle import router as vehicle_router
 from routers.tesla.configure import router as configure_router
 from routers.tesla.support import router as support_router
 
@@ -19,7 +18,6 @@ app.include_router(user_router)
 # tesla router
 app.include_router(tesla_user_router)
 app.include_router(test_drive_router)
-app.include_router(vehicle_router)
 app.include_router(configure_router)
 app.include_router(support_router)
 

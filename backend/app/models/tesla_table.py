@@ -12,23 +12,10 @@ class TeslaUser(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, index=True, unique=True, default=uuid.uuid4())
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
-    vehicles: Mapped[List["Vehicle"]] = relationship("Vehicle", back_populates="user")
     configurators: Mapped[List["ConfigureTesla"]] = relationship("ConfigureTesla", back_populates="user")
     test_drives: Mapped[List["TestDrive"]] = relationship("TestDrive", back_populates="user")
 
-
-class Vehicle(Base):
-    __tablename__ = "tesla_cars"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, unique=True)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    desc: Mapped[str] = mapped_column(String, nullable=False)
-    price: Mapped[float] = mapped_column(Float, nullable=False)
-    image: Mapped[str] = mapped_column(String, nullable=False)
-    model: Mapped[CarModelEnum] = mapped_column(Enum(CarModelEnum), default=CarModelEnum.TESLA_NEURALINK_GT)
-    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("tesla_users.id"))
-    user: Mapped["TeslaUser"] = relationship("TeslaUser", back_populates="vehicles")
     
-
 
 class ConfigureTesla(Base):
     __tablename__ = "tesla_configurators"

@@ -20,7 +20,7 @@ const Home2 = () => {
       {/* Grid Layout Container: 1 col on small, 2 cols on medium (md), 3 cols on large (lg) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 max-w-7xl mx-auto w-full">
         {vehicles.map((vehicle) => (
-          <div
+          <a href={`/vehicle/${vehicle.id}`}
             key={vehicle.id}
             className="flex flex-col mx-auto items-center justify-center gap-4 rounded-xl border border-gray-100 shadow-sm transition-shadow duration-300 hover:shadow-md h-full w-full max-w-160 "
           >
@@ -30,13 +30,13 @@ const Home2 = () => {
               <div className="h-64 sm:h-72 md:h-80 w-full overflow-hidden rounded-lg">
                 <img
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-out"
-                  src={`${BASE_URL}/${vehicle.image}`}
+                  src={`${vehicle.image}`}
                   alt={vehicle.name}
                 />
               </div>
 
               {/* Title & Description */}
-              <div className="w-full flex flex-col gap-2 px-3">
+              <div className="w-full flex flex-col gap-2 px-5">
                 <h3 className="text-3xl text-black font-semibold tracking-wide">
                   {vehicle.name}
                 </h3>
@@ -45,21 +45,25 @@ const Home2 = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-4 pb-4 w-full px-3">
+              <div className="flex flex-col gap-4 pb-4 w-full px-5">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-blue-800 text-3xl font-bold font-sans tracking-wide">
-                    ${Number(vehicle.price).toLocaleString()}
+                  <span className="text-blue-800 text-2xl font-semibold">
+                    {vehicle.price}
                   </span>
                   <span className="text-gray-600 text-xs capitalize tracking-wider">
                     Estimated price
                   </span>
                 </div>
 
+                <hr className="border border-gray-300/50" />
+                <div className="text-sm text-gray-600/80">
+                  <p>{vehicle.desc}</p>
+                </div>
                 <a
-                  href={`/vehicles/${vehicle.id}`}
+                  href={`/vehicle/${vehicle.id}`}
                   className="flex items-center gap-2 text-blue-800 font-medium group w-fit transition-colors duration-200"
                 >
-                  <span className="tracking-wide text-lg font-semibold">Explore</span>
+                  <span className="tracking-wide text-sm font-semibold">Explore</span>
                   <ArrowRight
                     size={18}
                     className="transform transition-transform duration-300 group-hover:translate-x-1"
@@ -70,7 +74,7 @@ const Home2 = () => {
 
             {/* Bottom Half of Card (Pricing & CTA Button pinned together) */}
 
-          </div>
+          </a>
         ))}
       </div>
     </section>

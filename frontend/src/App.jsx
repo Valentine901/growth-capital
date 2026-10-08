@@ -10,7 +10,9 @@ import Support from "./tesla/leads/Support";
 import Authentication from "./tesla/leads/Account";
 import ProtectedRoute from "./tesla/auth/ProtectedRoute";
 import TestDrivePayment from "./tesla/pages/test-drive/TestDrivePayment";
-
+import VehicleX from "./tesla/leads/VehicleX";
+import VehicleGT from "./tesla/leads/VehicleGT";
+import VehicleV1 from "./tesla/leads/VehicleV1";
 
 
 const App = () => {
@@ -22,6 +24,9 @@ const App = () => {
       <Route path="/" element={<TeslaMainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/vehicles" element={<Vehicles />} />
+        <Route path="/vehicle/v1" element={<VehicleV1 />} />
+        <Route path="/vehicle/x" element={<VehicleX />} />
+        <Route path="/vehicle/gt" element={<VehicleGT />} />
         <Route path="/configurator" element={<Configurator />} />
         <Route path="/test-drive" element={<TestDrive />} />
         <Route path="/testdrive-payment-address" element={

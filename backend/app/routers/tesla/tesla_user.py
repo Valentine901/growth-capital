@@ -82,3 +82,5 @@ async def api_login_user(data: UserLoginSchema, response: Response, db: Database
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
     return user
+
+
