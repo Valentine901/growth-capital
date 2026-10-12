@@ -15,10 +15,8 @@ class PaymentMethods(str, enum.Enum):
     BITCOIN = "bitcoin"
     ETHEREUM = "ethereum"
     BNB = "bnb"
-    PAYEE = "payee"
     TRON = "tron"
     USDT = "usdt"
-    USDTTRC = "usdttrc"
 
 class TransactionType(str, enum.Enum):
     DEPOSIT = "deposit"

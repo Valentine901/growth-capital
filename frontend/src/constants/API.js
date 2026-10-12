@@ -5,3 +5,8 @@ export const API = axios.create({
     baseURL: BASE_URL,
     withCredentials:true
 })
+
+export const APIInvest = axios.create({
+    baseURL: BASE_URL,
+    withCredentials:true
+})

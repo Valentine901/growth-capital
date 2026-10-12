@@ -29,6 +29,13 @@ class BaseUser:
         db.refresh(user)
         return user
     
+    @staticmethod 
+    def get_users(db: Session):
+        query = select(User).where(User.role == "user")
+        result = db.execute(query)
+        users = result.scalars().all()
+        return users
+    
     @staticmethod
     def delete_user(user: User, db: Session):
         db.delete(user)

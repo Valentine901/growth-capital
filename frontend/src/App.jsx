@@ -2,6 +2,14 @@ import { Routes, Route } from "react-router-dom"
 import TeslaMainLayout from "./tesla/TeslaMainLayout";
 import GrowthGeneralPage from "./cryptocurrency/GrowthGeneralPage";
 
+// investment route imports 
+import Login from "./cryptocurrency/auth/Login";
+import Register from "./cryptocurrency/auth/Register";
+import AdminDashboard from "./cryptocurrency/admin/AdminDashboard";
+import UserDashboard from "./cryptocurrency/user/UserDashboard";
+import InvestProtectedRoute from "./cryptocurrency/auth/ProtectedRoute";
+
+// tesla route imports
 import HomePage from "./tesla/leads/HomePage";
 import Vehicles from "./tesla/leads/Vehicles";
 import Configurator from "./tesla/leads/Configurator";
@@ -15,12 +23,18 @@ import VehicleGT from "./tesla/leads/VehicleGT";
 import VehicleV1 from "./tesla/leads/VehicleV1";
 
 
+
 const App = () => {
   return (
     <Routes>
+      {/* tesla section */}
       <Route path="/investment" element={<GrowthGeneralPage />} />
+      <Route path="/invest/login" element={<Login />} />
+      <Route path="/invest/register" element={<Register />} />
+      <Route path="/invest/user-dashboard" element={<InvestProtectedRoute><UserDashboard /></InvestProtectedRoute>} />
+      <Route path="/invest/admin/secured/dashboard" element={<InvestProtectedRoute><AdminDashboard /></InvestProtectedRoute>} />
 
-
+{/* tesla section */}
       <Route path="/" element={<TeslaMainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/vehicles" element={<Vehicles />} />

@@ -1,8 +1,11 @@
 const Home1 = () => {
   return (
-    <section className='bg-[url(src/assets/tesla-images/tesla-home.jpg)] w-full min-h-screen bg-black bg-no-repeat bg-cover pt-60 sm:pt-43 lg:pt-30 px-4 flex items-center justify-center'>
-      <div className='flex flex-col text-center w-full mx-auto'>
-        
+    <section className='relative w-full min-h-screen bg-black bg-no-repeat bg-cover pt-60 sm:pt-43 lg:pt-30 px-4 flex items-center justify-center overflow-hidden'
+      style={{ backgroundImage: "url('src/assets/tesla-images/tesla-home.jpg')" }}
+    >
+      {/* Content Container (z-10 keeps it interactive above the gradient layer) */}
+      <div className='z-10 flex flex-col text-center w-full mx-auto pb-16'>
+
         <span className="text-blue-800 text-sm md:text-base tracking-widest font-semibold uppercase mb-2">
           Experience The Future
         </span>
@@ -17,18 +20,22 @@ const Home1 = () => {
         </div>
 
         <div className='flex flex-col sm:flex-row w-full sm:w-auto gap-4 mx-auto justify-center mt-10 font-semibold px-4 sm:px-0'>
-          
-          <a href="/vehicles" className='block w-full sm:w-60 text-gray-100 text-xl py-4 px-8 rounded-lg bg-blue-600 hover:scale-105 transition-all duration-300 text-center'>
+
+          <a href="/vehicles" className='block w-full sm:w-60 text-gray-100 text-xl py-4 px-8 rounded-lg bg-blue-800 hover:scale-105 transition-all duration-300 text-center'>
             <span>Explore Vehicles</span>
           </a>
 
           <a href='/configurator' className='block w-full sm:w-60 border-2 border-white text-gray-100 rounded-lg text-xl py-4 px-8 hover:bg-gray-100 hover:text-black transition-all duration-300 hover:scale-105 text-center'>
             <span>Configure Yours</span>
           </a>
-          
+
         </div>
       </div>
+
+      {/* 1/3 Bottom Overlay that fades out cleanly */}
+      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
     </section>
+
   )
 }
 

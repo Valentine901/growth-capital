@@ -30,34 +30,45 @@ const Main = () => {
   const navigate = useNavigate();
 
   return (
-    <section className={`bg-[url(${tesla_v1})] w-full min-h-screen bg-black bg-no-repeat bg-cover px-4 flex flex-col gap-4 justify-center items-center pt-10`}>
-      <h2 className='text-lg text-gray-300 text-center '>PERFORMANCE SEDAN</h2>
-      <h1 className='text-gray-100 font-bold lg:font-extrabold text-center text-5xl md:text-6xl lg:text-7xl'>TESLA NEURALINK V1</h1>
-      <span className='text-gray-300 text-lg md:text-2xl tracking-wider'>Luxury redefined with AI-integrated intelligence</span>
-      <div className='flex flex-col gap-2 items-center'>
-        <span className='font-body text-3xl md:text-4xl lg:text-5xl font-semibold text-blue-800'>$23,300</span>
-        <span className='text-xs text-gray-200'>Starting price</span>
+    <section
+      style={{ backgroundImage: `url(${tesla_v1})` }}
+      className="relative w-full min-h-screen bg-black bg-no-repeat bg-cover px-4 flex flex-col gap-4 justify-center items-center pt-10 overflow-hidden"
+    >
+      {/* Content Container (z-10 ensures it stays above the bottom blur panel) */}
+      <div className="z-10 flex flex-col gap-4 justify-center items-center pb-16">
+        <h2 className='text-lg text-gray-300 text-center '>PERFORMANCE SEDAN</h2>
+        <h1 className='text-gray-100 font-bold lg:font-extrabold text-center text-5xl md:text-6xl lg:text-7xl'>TESLA NEURALINK V1</h1>
+        <span className='text-gray-50 font-semibold text-lg md:text-2xl tracking-wider'>Luxury redefined with AI-integrated intelligence</span>
+
+        <div className='flex flex-col gap-2 items-center'>
+          <span className='font-body text-3xl md:text-4xl lg:text-5xl font-semibold text-blue-800'>$23,300</span>
+          <span className='text-xs text-gray-200'>Starting price</span>
+        </div>
+
+        <div className="mt-10 flex w-full items-center justify-center gap-4 px-4 font-semibold">
+          <button
+            onClick={() => navigate("/configurator")}
+            className="w-full max-w-40 rounded-sm bg-blue-800 py-3 text-center text-sm text-gray-100
+             transition duration-300 hover:bg-blue-700
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
+          >
+            Configure Yours
+          </button>
+          <button
+            onClick={() => navigate("/test-drive")}
+            className="w-full max-w-40 rounded-sm border border-white py-3 text-center text-sm text-gray-100
+             transition duration-300 hover:bg-gray-100 hover:text-black
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Book Test drive
+          </button>
+        </div>
       </div>
 
-      <div className="mt-10 flex w-full items-center justify-center gap-4 px-4 font-semibold">
-        <button
-          onClick={() => navigate("/configurator")}
-          className="w-full max-w-40 rounded-sm bg-blue-800 py-3 text-center text-sm text-gray-100
-               transition duration-300 hover:bg-blue-700
-               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-        >
-          Configure Yours
-        </button>
-        <button
-          onClick={() => navigate("/test-drive")}
-          className="w-full max-w-40 rounded-sm border border-white py-3 text-center text-sm text-gray-100
-               transition duration-300 hover:bg-gray-100 hover:text-black
-               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        >
-          Book Test drive
-        </button>
-      </div>
+      {/* Dark, Blurry, Transparent Glass Overlay at the bottom */}
+      <div className="absolute bottom-0 left-0 w-full h-3/4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
     </section>
+
   )
 }
 

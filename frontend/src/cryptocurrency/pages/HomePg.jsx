@@ -29,13 +29,13 @@ const HomePg = () => {
 
           {/* Hero buttons */}
           <div className="mt-10 flex items-center justify-center gap-4 sm:flex-row">
-            <button className="group flex items-center justify-center gap-2 rounded-md bg-amber-300 px-8 py-4 font-heading font-bold text-black transition-all duration-300 hover:bg-yellow-200 hover:shadow-lg hover:shadow-yellow-400/20">
+            <a href="/invest/login" className="group flex items-center justify-center gap-2 rounded-md bg-amber-300 px-8 py-4 font-heading font-bold text-black transition-all duration-300 hover:bg-yellow-200 hover:shadow-lg hover:shadow-yellow-400/20">
               Client Login
-            </button>
+            </a>
 
-            <button className="rounded-md border-2 border-gray-300 px-8 py-3.5 font-heading font-medium text-yellow-400 transition-all duration-300  hover:bg-yellow-400/5">
+            <a href="/invest/register" className="rounded-md border-2 border-gray-300 px-8 py-3.5 font-heading font-medium text-yellow-400 transition-all duration-300  hover:bg-yellow-400/5">
               Open Account
-            </button>
+            </a>
           </div>
         </div>
 

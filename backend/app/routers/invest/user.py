@@ -13,7 +13,7 @@ from models.enums import UserRole
 from models.tables import User 
 import uuid 
 
-router = APIRouter(tags=["User"])
+router = APIRouter(prefix="/investment", tags=["User"])
 DatabaseEngine = Annotated[Session, Depends(get_db)]
 CurrentUser = Annotated[User, Depends(BaseAuth.get_current_user)]
 
@@ -40,7 +40,7 @@ async def api_refresh_token(request: Request, response: Response):
         response.set_cookie(key="access_token", value=str(new_access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
         return {"message":"Token refreshed successfully"}
 
-@router.post("/user-register")
+@router.post("/user-register", response_model=UserResponseSchema)
 async def api_create_user(data: CreateUserSchema, response: Response, db: DatabaseEngine):
     data_dict = data.model_dump()
     user = BaseUser.get_user_by_email(email=data_dict["email"], db=db)
@@ -60,10 +60,10 @@ async def api_create_user(data: CreateUserSchema, response: Response, db: Databa
     response.set_cookie(key="access_token", value=str(access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
-    return {"message": "Registered success"} 
+    return new_user
 
 
-@router.post("/user-login")
+@router.post("/user-login", response_model=UserResponseSchema)
 async def api_login_user(data: UserLoginSchema, response: Response, db: DatabaseEngine):
     user = BaseUser.get_user_by_email(email=data.email, db=db)
     if user is None:
@@ -78,7 +78,7 @@ async def api_login_user(data: UserLoginSchema, response: Response, db: Database
     response.set_cookie(key="access_token", value=str(access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
-    return {"message": "Login success"}
+    return user
 
 
 
@@ -88,12 +88,12 @@ async def api_login_user(data: UserLoginSchema, response: Response, db: Database
 
 
 # ADMIN SECTION LOGIC 
-@router.post("/create-admin")
+@router.post("/create-admin", response_model=UserResponseSchema)
 async def api_create_admin(data: CreateUserSchema, response: Response, db: DatabaseEngine):
     data_dict = data.model_dump()
     user = BaseUser.get_user_by_email(email=data_dict["email"], db=db)
     if user:
-        BaseErrorException.bad_request(detail="User already existed")
+        BaseErrorException.bad_request(detail="Admin already existed")
 
     data_dict["password"] =  BaseSecurity.hash_password(data_dict["password"])
     data_dict["is_admin"] = True
@@ -108,13 +108,13 @@ async def api_create_admin(data: CreateUserSchema, response: Response, db: Datab
     response.set_cookie(key="access_token", value=str(access_token), max_age=60* settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
     response.set_cookie(key="refresh_token", value=str(refresh_token), max_age=60*60*24*settings.ACCESS_TOKEN_EXPIRE_MINUTES, httponly=True, secure=True, samesite="lax")
 
-    return {"message": "Registered success"} 
+    return new_user
 
 
 @router.get("/user/{user_id}", response_model=UserResponseSchema)
 async def api_get_user(user_id: uuid.UUID, current_user: CurrentUser, db: DatabaseEngine):
     if current_user.role != UserRole.ADMIN:
-        BaseErrorException.unauthorized("Unauthorized access, only admin can perform this action")
+        BaseErrorException.forbidden("Unauthorized access, only admin can perform this action")
     user = BaseUser.get_user_by_id(user_id=user_id, db=db)
     if user is None:
         BaseErrorException.not_found("User not found")
@@ -123,9 +123,17 @@ async def api_get_user(user_id: uuid.UUID, current_user: CurrentUser, db: Databa
 @router.delete("/delete/user/{user_id}")
 async def api_delete_user(user_id: uuid.UUID, current_user: CurrentUser, db: DatabaseEngine):
     if current_user.role != UserRole.ADMIN:
-        BaseErrorException.unauthorized("Unauthorized access, only admin can perform this action")
+        BaseErrorException.forbidden("Unauthorized access, only admin can perform this action")
     user = BaseUser.get_user_by_id(user_id=user_id, db=db)
     if user is None:
         BaseErrorException.not_found("User not found")
     BaseUser.delete_user(user=user, db=db) #type: ignore
     return {"message": "User deleted successfully"}
+
+
+@router.get("/users", response_model=List[UserResponseSchema])
+async def admin_get_users(db: DatabaseEngine, current_user: CurrentUser):
+    if current_user.role != UserRole.ADMIN:
+        BaseErrorException.forbidden("Unauthorized access, only admin can perform this action")
+    users = BaseUser.get_users(db=db)
+    return users

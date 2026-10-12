@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from pathlib import Path 
 # investment
 from routers.invest.user import router as user_router
-
+from routers.invest.plan import router as plan_router
 # tesla
 from routers.tesla.tesla_user import router as tesla_user_router
 from routers.tesla.test_drive import router as test_drive_router
@@ -14,6 +14,7 @@ from routers.tesla.support import router as support_router
 app = FastAPI()
 
 app.include_router(user_router)
+app.include_router(plan_router)
 
 # tesla router
 app.include_router(tesla_user_router)

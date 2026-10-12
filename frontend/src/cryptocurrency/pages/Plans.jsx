@@ -1,7 +1,9 @@
 import { Check } from 'lucide-react';
 import React from 'react'
+import { useInvestAuth } from '../context/AuthContext';
 
 const Plans = () => {
+  const {plans} = useInvestAuth();
   return (
     <section id="plans" className="mx-auto max-w-7xl px-6 pt-20 pb-3 flex flex-col items-center gap-4 w-full">
       {/* Header Section */}
@@ -17,49 +19,53 @@ const Plans = () => {
 
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-12 px-6 md:px-12">
-
-        {/* plan card */}
-        <div className='border-t-4 border-amber-300 rounded-t-lg py-3 max-w-120'>
-          <div className='flex flex-col gap-4 bg-amber-900/10 w-full'>
-
-            <h2 className='text-amber-300 text-2xl text-center font-bold'>Starter Plan</h2>
-            <div>
-              <div className='flex flex-col items-center mx-auto text-center justify-center p-9 rounded-full bg-amber-300 w-30'>
-                <h2 className='text-xl text-amber-300'>2%</h2>
-                <span className='text-gray-100 font-semibold text-sm'>Daily</span>
-              </div>
-              <div className='flex flex-col gap-1 items-center'>
-                <p className='text-amber-300 font-semibold'>Min: <span className='text-gray-100'>$100</span></p>
-                <p className='text-amber-300 font-semibold'>Max: <span className='text-gray-100'>$4,999</span></p>
-              </div>
-            </div>
-          </div>
-
-          <div className='flex flex-col gap-5 px-2'>
-
-            <div className='flex w-full justify-between bg-amber-900/10 py-2'>
-              <span>Duration</span>
-              <span className='font-bold'>7 Days</span>
-            </div>
-
-            <div className='flex w-full justify-between bg-amber-900/10 py-2'>
-              <span>Capital In Return</span>
-              <span className='flex text-green-600 items-center gap-1 font-bold'><Check size={18} /> Yes</span>
-            </div>
-
-            <div className='flex w-full justify-between bg-amber-900/10 py-2 text-amber-300'>
-              <span>Referral Bonus</span>
-              <span className='font-bold'>10%</span>
-            </div>
-
-            <button className='border border-amber-300 w-full p-2 rounded-lg bg-amber-900/10 text-center font-bold '>
-              Invest Now
-            </button>
-
-          </div>
-
-        </div>
-
+        {plans.map((plan) => (
+           <div key={plan.id} className='border-t-4 border-amber-300 rounded-t-lg py-3 max-w-120'>
+                    <div className='flex flex-col gap-4 bg-black w-full'>
+          
+                      <h2 className='text-amber-300 text-2xl text-center font-bold'>{plan.plan_name}</h2>
+                      <div>
+                        <div className='flex flex-col items-center mx-auto text-center justify-center rounded-full w-25 h-25 bg-amber-300 mb-1'>
+                          <div className='flex items-center gap-2 text-black font-extrabold mx-auto'>
+                           <h2 className='text-3xl'>{plan.daily_profit_percentage}</h2>
+                           %
+                          </div>
+                         
+                          <span className='text-gray-100 font-semibold text-sm'>Daily</span>
+                        </div>
+                        <div className='flex flex-col gap-1 items-center'>
+                          <p className='text-amber-300 font-semibold'>Min: <span className='text-gray-100'>${plan.min_amount}</span></p>
+                          <p className='text-amber-300 font-semibold'>Max: <span className='text-gray-100'>${plan.max_amount}</span></p>
+                        </div>
+                      </div>
+                    </div>
+          
+                    <div className='flex flex-col gap-5 px-2'>
+          
+                      <div className='flex w-full justify-between bg-black py-2'>
+                        <span>Duration</span>
+                        <span className='font-bold'>{plan.duration} Days</span>
+                      </div>
+          
+                      <div className='flex w-full justify-between bg-black py-2'>
+                        <span>Capital In Return</span>
+                        <span className='flex text-green-600 items-center gap-1 font-bold'><Check size={18} /> Yes</span>
+                      </div>
+          
+                      <div className='flex w-full justify-between bg-black py-2 text-amber-300'>
+                        <span>Referral Bonus</span>
+                        <span className='font-bold'>{plan.referral_bonus}%</span>
+                      </div>
+          
+                      <a href='/invest/login' className='border border-amber-300 w-full p-2 rounded-lg bg-black text-center font-bold '>
+                        Invest Now
+                      </a>
+          
+                    </div>
+          
+                  </div>
+        ))}
+      
       </div>
     </section>
   )

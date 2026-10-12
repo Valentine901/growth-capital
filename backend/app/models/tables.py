@@ -20,7 +20,6 @@ class User(Base):
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
     is_user: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    profile: Mapped["Profile"] = relationship("Profile", back_populates="user", uselist=False)
     wallet: Mapped["Wallet"] = relationship("Wallet", back_populates="user", uselist=False)
     investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="user")
     deposits: Mapped[List["Deposit"]] = relationship("Deposit", back_populates="user")
@@ -36,16 +35,6 @@ class VerificationToken(Base):
     user: Mapped["User"] = relationship("User", back_populates="verification_codes")
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
-class Profile(Base):
-    __tablename__ = "profiles"
-
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), unique=True, nullable=False)
-    profile_picture: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    address: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    country: Mapped[str | None] = mapped_column(String(100), nullable=True)
-
-    user: Mapped["User"] = relationship("User", back_populates="profile")
 
 
 class Wallet(Base):
@@ -61,10 +50,12 @@ class Wallet(Base):
 class InvestmentPlan(Base):
     __tablename__ = "investment_plans"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
-    min_amount: Mapped[float] = mapped_column(Float, nullable=False)
-    max_amount: Mapped[float] = mapped_column(Float, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    plan_name: Mapped[str] = mapped_column(String, nullable=False)
+    min_amount: Mapped[int] = mapped_column(Integer, nullable=False)
+    max_amount: Mapped[int] = mapped_column(Integer, nullable=False)
     duration: Mapped[int] = mapped_column(Integer, nullable=False)
+    daily_profit_percentage: Mapped[int] = mapped_column(Integer, default=0.0, nullable=False)
     referral_bonus: Mapped[int] = mapped_column(Integer, nullable=False)
 
     investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="plan")
@@ -73,9 +64,9 @@ class InvestmentPlan(Base):
 class Investment(Base):
     __tablename__ = "investments"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    plan_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("investment_plans.id"), nullable=False)
+    plan_id: Mapped[int] = mapped_column(Integer, ForeignKey("investment_plans.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -86,7 +77,7 @@ class Investment(Base):
 class Deposit(Base):
     __tablename__ = "deposits"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     payment_method: Mapped[PaymentMethods] = mapped_column(Enum(PaymentMethods), nullable=False, default=PaymentMethods.BITCOIN)
@@ -98,7 +89,7 @@ class Deposit(Base):
 class WithDrawal(Base):
     __tablename__ = "withdrawals"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
@@ -109,7 +100,7 @@ class WithDrawal(Base):
 class Message(Base):
     __tablename__ = "messages"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), nullable=False)
     message: Mapped[str] = mapped_column(Text, nullable=False)

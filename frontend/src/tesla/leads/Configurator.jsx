@@ -19,7 +19,7 @@ const CONFIG_OPTIONS = {
   ],
 
   exterior_colors: [
-    { id: 'c1', name: 'Pearl White Multi-Coat', price: 0, hex: '#f5f5f2' },
+    { id: 'c1', name: 'Pearl White Multi Coat', price: 0, hex: '#f5f5f2' },
     { id: 'c2', name: 'Solid Black', price: 1000, hex: '#111111' },
     { id: 'c3', name: 'Deep Blue Metallic', price: 1000, hex: '#1e3a8a' },
     { id: 'c4', name: 'Midnight Silver Metallic', price: 1000, hex: '#9ca3af' },

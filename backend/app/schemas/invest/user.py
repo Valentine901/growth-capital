@@ -20,6 +20,7 @@ class UserResponseSchema(BaseModel):
     last_name: str
     email: str
     phone: str 
+    role: str
 
     class Config:
         from_attributes = True

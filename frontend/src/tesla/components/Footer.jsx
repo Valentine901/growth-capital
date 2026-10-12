@@ -54,7 +54,7 @@ const Footer = () => {
           &copy; 2026 TASLA NEURALINK. All rights reserved.
         </span>
         <div className="flex gap-6">
-          <a href="/privacy" className="text-xs text-gray-500 hover:text-black transition-colors">Privacy Policy</a>
+          <a href="" className="text-xs text-gray-500 hover:text-black transition-colors">Privacy Policy</a>
           <a href="/terms" className="text-xs text-gray-500 hover:text-black transition-colors">Terms of Service</a>
         </div>
       </div>
