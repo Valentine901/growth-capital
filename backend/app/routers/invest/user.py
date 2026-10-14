@@ -6,6 +6,7 @@ from dependencies.security import BaseSecurity
 from settings.config import settings 
 from dependencies.auth import BaseAuth
 from schemas.invest.user import CreateUserSchema, UserLoginSchema, UserResponseSchema 
+from crud.invest.wallet import BaseWallet
 from crud.invest.user import BaseUser
 from settings.database_engine import get_db
 from typing import Annotated, List
@@ -45,7 +46,7 @@ async def api_create_user(data: CreateUserSchema, response: Response, db: Databa
     data_dict = data.model_dump()
     user = BaseUser.get_user_by_email(email=data_dict["email"], db=db)
     if user:
-        BaseErrorException.bad_request(detail="User already existed")
+        BaseErrorException.bad_request(detail="Email account already existed")
 
     data_dict["password"] =  BaseSecurity.hash_password(data_dict["password"])
     data_dict["is_admin"] = False 
@@ -53,6 +54,14 @@ async def api_create_user(data: CreateUserSchema, response: Response, db: Databa
     data_dict["role"] = UserRole.USER
 
     new_user = BaseUser.create_user(data=data_dict, db=db)
+
+    new_wallet = {
+        "user_id": new_user.id,
+        "balance": 0.0
+    }
+
+    # create user wallet
+    BaseWallet.create(new_wallet, db=db)
 
     access_token = BaseSecurity.create_token(data={"sub": str(new_user.id)}, expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
     refresh_token = BaseSecurity.create_token(data={"sub": str(new_user.id)}, expires_delta=timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS))
@@ -67,7 +76,7 @@ async def api_create_user(data: CreateUserSchema, response: Response, db: Databa
 async def api_login_user(data: UserLoginSchema, response: Response, db: DatabaseEngine):
     user = BaseUser.get_user_by_email(email=data.email, db=db)
     if user is None:
-        BaseErrorException.not_found("User does not exist")
+        BaseErrorException.not_found("Email account not registered")
 
     if not BaseSecurity.verify_password(data.password, user.password): #type: ignore
         BaseErrorException.bad_request("Incorrect user password")

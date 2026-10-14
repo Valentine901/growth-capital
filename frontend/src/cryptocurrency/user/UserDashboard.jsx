@@ -1,11 +1,12 @@
 import UserNavbar from './UserNavbar'
 import UserSiderbar from './UserSidebar'
 import UserMain from './UserMain'
-import Deposit from './Deposit'
+import Deposit from './deposit/Deposit'
 import Withdrawal from './Withdrawal'
 import Referral from './Referral'
 import Profit from './Profit'
 import Invest from './Invest'
+import Transactions from './Transactions'
 
 import { useState } from 'react'
 
@@ -31,7 +32,10 @@ const UserDashboard = () => {
         return <Withdrawal />
 
       case "dashboard":
-        return <UserMain />
+        return <UserMain setName={setName} />
+      
+        case "transactions":
+          return <Transactions />
       
         case "referral":
           return <Referral />

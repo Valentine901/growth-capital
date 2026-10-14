@@ -1,7 +1,7 @@
 import React from 'react'
 import { Check } from 'lucide-react'
 
-const PlanCard = ({ plan }) => {
+const PlanCard = ({ plan, onSelect }) => {
   return (
         <div className='border-t-4 border-amber-300 rounded-t-lg py-3 max-w-120'>
           <div className='flex flex-col gap-4 bg-black w-full'>
@@ -40,7 +40,7 @@ const PlanCard = ({ plan }) => {
               <span className='font-bold'>{plan.referral_bonus}%</span>
             </div>
 
-            <button className='border border-amber-300 w-full p-2 rounded-lg bg-black text-center font-bold '>
+            <button onClick={onSelect} className='border border-amber-300 w-full p-2 rounded-lg hover:bg-amber-300 hover:text-black transition-all duration-300 bg-black text-center font-bold '>
               Invest Now
             </button>
 

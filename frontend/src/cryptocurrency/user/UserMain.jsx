@@ -1,6 +1,32 @@
 import { ArrowUpFromLine, ArrowDownToLine, Wallet, Coins, UsersRound } from "lucide-react";
 import Plans from "./Plans";
-const UserMain = () => {
+import { useState, useEffect } from "react";
+import { APIInvest } from "../../constants/API";
+
+
+
+const UserMain = ({ setName }) => {
+    const [walletBal, setWalletBal] = useState(0.0);
+    const [loading, setLoading] = useState(false);
+
+    const handleFetchWalletBalance = async () => {
+        setLoading(false);
+        try{
+            const response = await APIInvest.get("/wallets/user-wallet");
+            const bal = Number(response.data.balance);
+            setWalletBal(bal);
+        } catch (error) {
+            console.log(error.response.data.detail)
+        } finally{
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        handleFetchWalletBalance();
+    }, [])
+
+
     return (
         <div className='flex-1 bg-zinc-900 w-full p-6 lg:p-8 overflow-y-auto'>
             <div className='max-w-7xl mx-auto'>
@@ -11,7 +37,7 @@ const UserMain = () => {
                             <Wallet />
                         </div>
                         <span className="text-zinc-400/60 uppercase">Wallet Balance</span>
-                        <span className="text-2xl font-bold">$0.00</span>
+                        <span className="text-2xl font-bold">${walletBal.toFixed(2)}</span>
 
                     </div>
                     <div className="flex flex-col p-6 items-start rounded-lg border border-amber-300/30 gap-2 bg-black max-w-80 w-full">
@@ -39,8 +65,8 @@ const UserMain = () => {
                 </div>
 
                 <div className="flex mb-8 items-center space-x-2">
-                    <button className="py-3 px-6 rounded-md border bg-amber-300 text-black font-semibold border-amber-300/30 w-full max-w-50 hover:bg-amber-300/80 transition-all duration-300"> Deposit</button>
-                    <button className="py-3 px-6 rounded-md border border-amber-300/30 w-full max-w-50  hover:border-amber-300/60 transition-all duration-300 font-semibold">Withdraw</button>
+                    <button onClick={() => setName("deposit")} className="py-3 px-6 rounded-md border bg-amber-300 text-black font-semibold border-amber-300/30 w-full max-w-50 hover:bg-amber-300/80 transition-all duration-300"> Deposit</button>
+                    <button onClick={() => setName("withdrawal")} className="py-3 px-6 rounded-md border border-amber-300/30 w-full max-w-50  hover:border-amber-300/60 transition-all duration-300 font-semibold">Withdraw</button>
                 </div>
 
                 <div className='p-6 rounded-2xl bg-zinc-950 border border-zinc-800 shadow-xl min-h-[400px] scroll-auto'>

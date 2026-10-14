@@ -3,14 +3,14 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from settings.database_engine import Base
 import uuid 
-from models.enums import UserRole, PaymentMethods
+from models.enums import UserRole, PaymentMethods, TransactionStatus, TransactionType
 from typing import List
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     first_name: Mapped[str] = mapped_column(String(50), nullable=False)
     last_name: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str] = mapped_column(String(50), nullable=False)
@@ -21,7 +21,7 @@ class User(Base):
     is_user: Mapped[bool] = mapped_column(Boolean, default=True)
 
     wallet: Mapped["Wallet"] = relationship("Wallet", back_populates="user", uselist=False)
-    investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="user")
+    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="user")
     deposits: Mapped[List["Deposit"]] = relationship("Deposit", back_populates="user")
     withdrawals: Mapped[List["WithDrawal"]] = relationship("WithDrawal", back_populates="user")
     verification_codes: Mapped["VerificationToken"] = relationship("VerificationToken", back_populates="user")
@@ -40,7 +40,7 @@ class VerificationToken(Base):
 class Wallet(Base):
     __tablename__ = "wallets"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), unique=True, nullable=False)
     balance: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
 
@@ -58,42 +58,48 @@ class InvestmentPlan(Base):
     daily_profit_percentage: Mapped[int] = mapped_column(Integer, default=0.0, nullable=False)
     referral_bonus: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="plan")
-
-
-class Investment(Base):
-    __tablename__ = "investments"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    plan_id: Mapped[int] = mapped_column(Integer, ForeignKey("investment_plans.id"), nullable=False)
-    amount: Mapped[float] = mapped_column(Float, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
-
-    user: Mapped["User"] = relationship("User", back_populates="investments")
-    plan: Mapped["InvestmentPlan"] = relationship("InvestmentPlan", back_populates="investments")
-
+    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="plan")
 
 class Deposit(Base):
     __tablename__ = "deposits"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     payment_method: Mapped[PaymentMethods] = mapped_column(Enum(PaymentMethods), nullable=False, default=PaymentMethods.BITCOIN)
+    generated_crypto_address: Mapped[str] = mapped_column(String)
+    payment_status: Mapped[TransactionStatus] = mapped_column(Enum(TransactionStatus), nullable=False, default=TransactionStatus.PENDING)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
-
     user: Mapped["User"] = relationship("User", back_populates="deposits")
+    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="deposit")
+
+class Transaction(Base):
+    __tablename__ = "transactions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    plan_id: Mapped[int] = mapped_column(Integer, ForeignKey("investment_plans.id"), nullable=False)
+    deposit_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("deposits.id"), nullable=False)
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
+    transaction_type: Mapped[TransactionType] = mapped_column(Enum(TransactionType), default=TransactionType.INVESTMENT, nullable=False)
+    payment_status: Mapped[TransactionStatus] = mapped_column(Enum(TransactionStatus), nullable=False, default=TransactionStatus.PENDING)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    user: Mapped["User"] = relationship("User", back_populates="transactions")
+    plan: Mapped["InvestmentPlan"] = relationship("InvestmentPlan", back_populates="transactions")
+    deposit: Mapped["Deposit"] = relationship("Deposit", back_populates="transactions")
+
 
 
 class WithDrawal(Base):
     __tablename__ = "withdrawals"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
     payment_method: Mapped[PaymentMethods] = mapped_column(Enum(PaymentMethods), nullable=False, default=PaymentMethods.BITCOIN)
+    crypto_withdrawal_address: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     user: Mapped["User"] = relationship("User", back_populates="withdrawals")
 
 
@@ -104,4 +110,5 @@ class Message(Base):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(100), nullable=False)
     message: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 

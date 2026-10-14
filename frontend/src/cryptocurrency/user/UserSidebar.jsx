@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, LogOut, X, PlusSquare, ArrowUpFromLine, ArrowDownToLine, UserRoundPlus, Coins, TrendingUp, LineChart } from "lucide-react";
+import { LayoutDashboard, LogOut, X, ArrowUpFromLine, ArrowDownToLine, UserRoundPlus, Receipt, TrendingUp, LineChart } from "lucide-react";
 
 const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => {
 
@@ -9,6 +9,7 @@ const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => 
     { name: "invest", icon: <TrendingUp /> },
     { name: "withdrawal", icon: <ArrowUpFromLine /> },
     { name: "deposit", icon: <ArrowDownToLine /> },
+    { name: "transactions", icon: <Receipt /> },
     { name: "referral", icon: <UserRoundPlus /> },
 
   ]
