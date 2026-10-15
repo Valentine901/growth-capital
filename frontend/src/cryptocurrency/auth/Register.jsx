@@ -151,7 +151,7 @@ const Register = () => {
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
-                                placeholder="John"
+                                placeholder="Doe"
                                 className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl outline-none focus:border-amber-400 text-gray-100 placeholder:text-zinc-600 transition-all duration-200"
                             />
                         </div>

@@ -20,8 +20,4 @@ class PaymentMethods(str, enum.Enum):
 
 class TransactionType(str, enum.Enum):
     DEPOSIT = "deposit"
-    WITHDRAWAL = "withdrawal"
     INVESTMENT = "investment"
-    PROFIT = "profit"
-    CAPITAL_RETURN = "capital_return"
-    REFERRAL_BONUS = "referral_bonus"

@@ -4,7 +4,6 @@ from datetime import datetime
 
 class CreateTransaction(BaseModel):
     plan_id: int 
-    deposit_id: uuid.UUID
     user_id: uuid.UUID
     amount: float 
     payment_status: str 

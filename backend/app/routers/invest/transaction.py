@@ -6,7 +6,7 @@ from crud.invest.wallet import BaseWallet
 from dependencies.auth import BaseAuth
 from error_wrapper import BaseErrorException
 from models.tables import User 
-from models.enums import UserRole, TransactionStatus
+from models.enums import UserRole, TransactionStatus, TransactionType
 from schemas.invest.deposit import * 
 from schemas.invest.transaction import CreateTransaction, TransactionResponseSchema
 from typing import Annotated, List
@@ -37,9 +37,11 @@ async def update_transaction_status(transaction_id: int, payment_status: Transac
     return updated_transaction
 
 @router.get("/user-transactions", response_model=List[TransactionResponseSchema])
-async def api_get_user_transaction(current_user: CurrentUser, db: DatabaseEngine):
-    transactions = BaseTransaction.get_transactions_by_user_id(user_id=current_user.id, db=db)
+async def api_get_user_transactions(current_user: CurrentUser, db: DatabaseEngine):
+
+    transactions = BaseTransaction.get_transactions_by_owner(user_id=current_user.id, db=db)
     return transactions
+
 
 @router.get("/admin-view-user-transactions/{user_id}", response_model=List[TransactionResponseSchema])
 async def api_admin_view_user_transaction(user_id: uuid.UUID, current_user: CurrentUser, db: DatabaseEngine):

@@ -23,6 +23,7 @@ class User(Base):
     wallet: Mapped["Wallet"] = relationship("Wallet", back_populates="user", uselist=False)
     transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="user")
     deposits: Mapped[List["Deposit"]] = relationship("Deposit", back_populates="user")
+    investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="user")
     withdrawals: Mapped[List["WithDrawal"]] = relationship("WithDrawal", back_populates="user")
     verification_codes: Mapped["VerificationToken"] = relationship("VerificationToken", back_populates="user")
 
@@ -71,7 +72,6 @@ class Deposit(Base):
     payment_status: Mapped[TransactionStatus] = mapped_column(Enum(TransactionStatus), nullable=False, default=TransactionStatus.PENDING)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
     user: Mapped["User"] = relationship("User", back_populates="deposits")
-    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="deposit")
 
 class Transaction(Base):
     __tablename__ = "transactions"
@@ -79,7 +79,6 @@ class Transaction(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     plan_id: Mapped[int] = mapped_column(Integer, ForeignKey("investment_plans.id"), nullable=False)
-    deposit_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("deposits.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     transaction_type: Mapped[TransactionType] = mapped_column(Enum(TransactionType), default=TransactionType.INVESTMENT, nullable=False)
     payment_status: Mapped[TransactionStatus] = mapped_column(Enum(TransactionStatus), nullable=False, default=TransactionStatus.PENDING)
@@ -87,7 +86,7 @@ class Transaction(Base):
 
     user: Mapped["User"] = relationship("User", back_populates="transactions")
     plan: Mapped["InvestmentPlan"] = relationship("InvestmentPlan", back_populates="transactions")
-    deposit: Mapped["Deposit"] = relationship("Deposit", back_populates="transactions")
+
 
 
 
@@ -98,9 +97,19 @@ class WithDrawal(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     payment_method: Mapped[PaymentMethods] = mapped_column(Enum(PaymentMethods), nullable=False, default=PaymentMethods.BITCOIN)
-    crypto_withdrawal_address: Mapped[str] = mapped_column(String)
+    crypto_withdrawal_address: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     user: Mapped["User"] = relationship("User", back_populates="withdrawals")
+
+
+class Investment(Base):
+    __tablename__ = "investments"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    user: Mapped["User"] = relationship("User", back_populates="investments")
 
 
 class Message(Base):

@@ -67,8 +67,8 @@ async def api_make_deposit(plan_id: int, data: CreateDepositSchema, current_user
         except ValueError:
             BaseErrorException.bad_request("Failed to parse gateway data")
    
-        generated_address = payment_data.get("pay_address")
-        exact_crypto_amount = payment_data.get("pay_amount")
+        generated_address = payment_data.get("pay_address") #type: ignore
+        exact_crypto_amount = payment_data.get("pay_amount") #type: ignore
 
     data_dict = data.model_dump()
     data_dict["amount"] = float(data.amount) 
@@ -80,7 +80,6 @@ async def api_make_deposit(plan_id: int, data: CreateDepositSchema, current_user
     
     transac_data = CreateTransaction(**{
         "plan_id": plan_id, 
-        "deposit_id": new_deposit.id,
         "user_id": current_user.id,
         "amount": float(data.amount),
         "payment_status": TransactionStatus.PENDING,

@@ -1,10 +1,10 @@
 from fastapi import Depends, APIRouter, status 
 from sqlalchemy.orm import Session 
 from crud.invest.wallet import BaseWallet
+from crud.invest.withdrawal import BaseWithDrawal
 from dependencies.auth import BaseAuth
 from error_wrapper import BaseErrorException
 from models.tables import User 
-from models.enums import UserRole
 from schemas.invest.wallet import * 
 from typing import Annotated
 from settings.database_engine import get_db 
@@ -50,4 +50,5 @@ async def decrement_wallet(amount: float, current_user: CurrentUser, db: Databas
         BaseErrorException.bad_request("Insufficient funds")
 
     updated_wallet = BaseWallet.decrement(amount=amount, wallet=user_wallet, db=db)
+
     return {"data": {"wallet_id": updated_wallet.id, "balance": updated_wallet.balance}}

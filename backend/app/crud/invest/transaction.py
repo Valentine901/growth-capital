@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session 
 from models.tables import Transaction
-from models.enums import TransactionStatus
+from models.enums import TransactionStatus, TransactionType
 import uuid 
 
 class BaseTransaction:
@@ -28,6 +28,14 @@ class BaseTransaction:
         result = stmt.scalars().all()
         return result
 
+    @staticmethod 
+    def get_transactions_by_owner(user_id: uuid.UUID, db: Session):
+        query = select(Transaction).where(Transaction.user_id == user_id)
+        stmt = db.execute(query)
+        result = stmt.scalars().all()
+        return result
+
+    
     @staticmethod
     def get_transaction(transaction_id: int, db: Session):
         query = select(Transaction).where(Transaction.id == transaction_id)

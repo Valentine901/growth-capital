@@ -8,6 +8,8 @@ from routers.invest.plan import router as plan_router
 from routers.invest.deposit import router as deposit_router
 from routers.invest.transaction import router as transaction_router
 from routers.invest.wallet import router as wallet_router
+from routers.invest.withdrawal import router as withdrawal_router
+from routers.invest.investment import router as invest_router
 # tesla
 from routers.tesla.tesla_user import router as tesla_user_router
 from routers.tesla.test_drive import router as test_drive_router
@@ -18,6 +20,8 @@ app = FastAPI()
 
 app.include_router(wallet_router)
 app.include_router(deposit_router)
+app.include_router(invest_router)
+app.include_router(withdrawal_router)
 app.include_router(transaction_router)
 app.include_router(user_router)
 app.include_router(plan_router)

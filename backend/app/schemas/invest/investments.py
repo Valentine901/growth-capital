@@ -1,4 +1,5 @@
 from pydantic import BaseModel 
+from datetime import datetime
 import uuid 
 
 class CreateTransaction(BaseModel):
@@ -9,6 +10,11 @@ class CreateTransaction(BaseModel):
     payment_status: str 
     transaction_type: str 
 
+class CreateInvestment(BaseModel):
+    amount: float 
+    plan_id: int
+
+
 class UpdateTransaction(BaseModel):
     payment_status: str 
     transaction_type: str 
@@ -18,9 +24,12 @@ class TransactionResponseSchema(BaseModel):
     plan_id: int
     user_id: uuid.UUID
     amount: float
-    deposit_id: uuid.UUID
     payment_status: str 
     transaction_type: str 
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
 
 
  
