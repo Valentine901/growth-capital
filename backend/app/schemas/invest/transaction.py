@@ -21,3 +21,9 @@ class TransactionResponseSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UpdateTransaction(BaseModel):
+    payment_status: str 
+    transaction_type: str 
+

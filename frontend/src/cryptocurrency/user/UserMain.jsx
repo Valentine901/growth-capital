@@ -4,10 +4,18 @@ import { useInvestAuth } from "../context/AuthContext";
 
 
 const UserMain = ({ setName }) => {
-    const { wallet, withdrawals } = useInvestAuth();
-    const walletBalance = Number(wallet?.balance);
+    const { wallet, withdrawals, investments, profits } = useInvestAuth();
+    const walletBalance = Number(wallet?.balance || 0.00);
 
     const totalWithdrawnAmount = withdrawals.reduce((total, object) => {
+        return total += Number(object.amount)
+    }, 0);
+
+    const cleanedTotalProfit = profits.reduce((total, object) => {
+        return total += Number(object.total_amount)
+    }, 0);
+
+    const totalInvestmentAmount = investments.reduce((total, object) => {
         return total += Number(object.amount)
     }, 0);
     
@@ -36,14 +44,14 @@ const UserMain = ({ setName }) => {
                             <Coins />
                         </div>
                         <span className="text-zinc-400/60 uppercase">Profit</span>
-                        <span className="text-2xl font-bold">$0.00</span>
+                        <span className="text-2xl font-bold">${cleanedTotalProfit.toFixed(2)}</span>
                     </div>
                     <div className="flex flex-col p-6 items-start rounded-lg border border-amber-300/30 gap-2 bg-black max-w-80 w-full">
                         <div className="items-center flex w-10 h-10 text-blue-600 bg-blue-500/10 rounded-md justify-center">
                             <TrendingUp />
                         </div>
                         <span className="text-zinc-400/60 uppercase">Investments</span>
-                        <span className="text-2xl font-bold">$0.00</span>
+                        <span className="text-2xl font-bold">${totalInvestmentAmount.toFixed(2)}</span>
                     </div>
 
                 </div>

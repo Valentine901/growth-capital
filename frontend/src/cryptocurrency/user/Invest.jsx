@@ -60,7 +60,7 @@ const Invest = () => {
 
   const getHeader = () => {
     switch (step) {
-      case 2: return { title: "Enter amount to withdraw", desc: "Amount should be within your wallet limit" }
+      case 2: return { title: "Enter amount to invest", desc: "Amount should be within your wallet balance" }
       case 3: return { title: "Investment made successfully", desc: "Continue investment, your money works for you." }
       default: return { title: "Select investment plan ans start investing", desc: "Pick an investment plan of your choice" }
     }

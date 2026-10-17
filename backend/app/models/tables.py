@@ -25,6 +25,7 @@ class User(Base):
     deposits: Mapped[List["Deposit"]] = relationship("Deposit", back_populates="user")
     investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="user")
     withdrawals: Mapped[List["WithDrawal"]] = relationship("WithDrawal", back_populates="user")
+    profits: Mapped[List["Profit"]] = relationship("Profit", back_populates="user")
     verification_codes: Mapped["VerificationToken"] = relationship("VerificationToken", back_populates="user")
 
 class VerificationToken(Base):
@@ -60,6 +61,7 @@ class InvestmentPlan(Base):
     referral_bonus: Mapped[int] = mapped_column(Integer, nullable=False)
 
     transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="plan")
+    investments: Mapped[List["Investment"]] = relationship("Investment", back_populates="plan")
 
 class Deposit(Base):
     __tablename__ = "deposits"
@@ -89,7 +91,6 @@ class Transaction(Base):
 
 
 
-
 class WithDrawal(Base):
     __tablename__ = "withdrawals"
 
@@ -107,10 +108,26 @@ class Investment(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    plan_id: Mapped[int] = mapped_column(Integer, ForeignKey("investment_plans.id"), nullable=False)
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    next_profit_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     user: Mapped["User"] = relationship("User", back_populates="investments")
+    plan: Mapped["InvestmentPlan"] = relationship("InvestmentPlan", back_populates="investments")
+    profits: Mapped[List["Profit"]] = relationship("Profit", back_populates="investment")
 
+
+
+class Profit(Base):
+    __tablename__ = "profits"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    total_amount: Mapped[float] = mapped_column(Float, nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    investment_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("investments.id"), nullable=False)
+    user: Mapped["User"] = relationship("User", back_populates="profits")
+    investment: Mapped["Investment"] = relationship("Investment", back_populates="profits")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 class Message(Base):
     __tablename__ = "messages"

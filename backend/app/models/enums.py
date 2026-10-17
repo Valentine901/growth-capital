@@ -21,3 +21,4 @@ class PaymentMethods(str, enum.Enum):
 class TransactionType(str, enum.Enum):
     DEPOSIT = "deposit"
     INVESTMENT = "investment"
+    PROFIT = "profit"

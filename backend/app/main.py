@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path 
@@ -10,15 +11,24 @@ from routers.invest.transaction import router as transaction_router
 from routers.invest.wallet import router as wallet_router
 from routers.invest.withdrawal import router as withdrawal_router
 from routers.invest.investment import router as invest_router
+from routers.invest.profit import router as profit_router
 # tesla
 from routers.tesla.tesla_user import router as tesla_user_router
 from routers.tesla.test_drive import router as test_drive_router
 from routers.tesla.configure import router as configure_router
 from routers.tesla.support import router as support_router
+from services.profit import scheduler
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler.start()  #runs when app starts
+    yield # the task runs
+    scheduler.shutdown() #runs when the app stops
+
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(wallet_router)
+app.include_router(profit_router)
 app.include_router(deposit_router)
 app.include_router(invest_router)
 app.include_router(withdrawal_router)

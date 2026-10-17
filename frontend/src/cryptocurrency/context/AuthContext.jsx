@@ -7,6 +7,8 @@ const InvestAuthProvider = ({ children }) => {
     const [plans, setPlans] = useState([])
     const [withdrawals, setWithdrawals] = useState([]);
     const [wallet, setWallet] = useState(null);
+    const [investments, setInvestments] = useState([]);
+    const [profits, setProfits] = useState([]);
     const [userData, setUserData] = useState(() => {
         const savedUser = localStorage.getItem("invest_user");
         if (savedUser) {
@@ -35,13 +37,41 @@ const InvestAuthProvider = ({ children }) => {
         }
     }
 
+    // profit handler
+    const handleFetchUserProfits = async () => {
+        setLoading(false);
+        try {
+            const response = await APIInvest.get("/profits/");
+            setProfits(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error.response.data.detail)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // investment handler
+    const handleFetchUserInvestments = async () => {
+        setLoading(false);
+        try {
+            const response = await APIInvest.get("/transactions/transaction-type");
+            setInvestments(response.data);
+        } catch (error) {
+            console.log(error.response.data.detail)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    // user withdrawal handler
     const handleFetchUserWithdrawals = async () => {
         setLoading(true);
         setErrorMessage("");
         try {
             const response = await APIInvest.get("/withdrawals/")
             setWithdrawals(response.data);
-            
+
         } catch (error) {
             handleAxiosError(error);
         } finally {
@@ -161,13 +191,15 @@ const InvestAuthProvider = ({ children }) => {
         getCurrentUser()
         handleFetchPlans();
         handleFetchUserWallet();
+        handleFetchUserProfits()
+        handleFetchUserInvestments()
         handleFetchUserWithdrawals();
     }, [])
 
 
 
     return (
-        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser, SaveUserData, handleAxiosError, plans, handleFetchPlans, wallet, withdrawals }}>
+        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser, SaveUserData, handleAxiosError, plans, handleFetchPlans, wallet, withdrawals, investments, profits }}>
             {children}
         </AuthContext.Provider>
     )

@@ -150,7 +150,7 @@ const Deposit = () => {
                   disabled={loading}
                   className="w-full py-3 rounded-xl bg-amber-300/50 hover:bg-amber-300/80 disabled:bg-amber-300/40 font-semibold text-zinc-950 transition-colors"
                 >
-                  {loading ? "Generating Wallet Address..." : "Confirm & Get Address"}
+                  {loading ? "Processing Payment Address..." : "Confirm & Get Address"}
                 </button>
               </form>
             )}

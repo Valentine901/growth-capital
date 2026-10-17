@@ -50,4 +50,11 @@ class BaseTransaction:
         db.refresh(transaction)
         return transaction 
 
+    @staticmethod 
+    def get_transactions_by_type(user_id: uuid.UUID, db: Session):
+        query = select(Transaction).where((Transaction.transaction_type == TransactionType.INVESTMENT) and (Transaction.user_id == user_id))
+        statement = db.execute(query)
+        result = statement.scalars().all()
+        return result
+
 

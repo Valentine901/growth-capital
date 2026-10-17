@@ -42,6 +42,12 @@ async def api_get_user_transactions(current_user: CurrentUser, db: DatabaseEngin
     transactions = BaseTransaction.get_transactions_by_owner(user_id=current_user.id, db=db)
     return transactions
 
+# fetching investments user made to calc the total invested amount
+@router.get("/transaction-type", response_model=List[TransactionResponseSchema])
+async def api_get_transactions_by_user_type(current_user: CurrentUser, db: DatabaseEngine):
+    transactions = BaseTransaction.get_transactions_by_type(user_id=current_user.id, db=db)
+    return transactions
+
 
 @router.get("/admin-view-user-transactions/{user_id}", response_model=List[TransactionResponseSchema])
 async def api_admin_view_user_transaction(user_id: uuid.UUID, current_user: CurrentUser, db: DatabaseEngine):
