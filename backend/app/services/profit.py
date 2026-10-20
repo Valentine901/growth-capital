@@ -33,7 +33,7 @@ def check_investment():
                 amount_earned = (plan.daily_profit_percentage * investment.amount) / 100 #type:ignore
                 profit_data = {"total_amount": amount_earned, "user_id": investment.user_id, "investment_id": investment.id}
                 BaseProfit.create(data=profit_data, db=db)
-                investment.next_profit_at += timedelta(minutes=5)
+                investment.next_profit_at += timedelta(minutes=2)
                 db.commit()
                 
     except Exception:

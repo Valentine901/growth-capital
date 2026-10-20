@@ -6,6 +6,7 @@ const AuthContext = createContext();
 const InvestAuthProvider = ({ children }) => {
     const [plans, setPlans] = useState([])
     const [withdrawals, setWithdrawals] = useState([]);
+    const [completedWithdrawals, setCompletedWithdrawals] = useState([]);
     const [wallet, setWallet] = useState(null);
     const [investments, setInvestments] = useState([]);
     const [profits, setProfits] = useState([]);
@@ -65,6 +66,21 @@ const InvestAuthProvider = ({ children }) => {
     }
 
     // user withdrawal handler
+    const handleFetchUserCompletedWithdrawals = async () => {
+        setLoading(true);
+        setErrorMessage("");
+        try {
+            const response = await APIInvest.get("/withdrawals/completed")
+            console.log(response.data);
+            setCompletedWithdrawals(Array.isArray(response.data) ? response.data : []);
+
+        } catch (error) {
+            handleAxiosError(error);
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const handleFetchUserWithdrawals = async () => {
         setLoading(true);
         setErrorMessage("");
@@ -116,9 +132,10 @@ const InvestAuthProvider = ({ children }) => {
         }
     }, [])
 
-    const SaveUserData = (data) => {
+    const SaveUserData = useCallback((data) => {
         localStorage.setItem("invest_user", JSON.stringify(data));
-    }
+        setUserData(data);
+    }, []);
 
     const handleAxiosError = (error, fallbackMessage) => {
         if (error.response?.data?.detail) {
@@ -148,6 +165,17 @@ const InvestAuthProvider = ({ children }) => {
             setLoading(false);
         }
     }, []);
+
+
+    const logout = async () => {
+        try {
+            await APIInvest.post("/investment/logout");
+            setUserData(null)
+            localStorage.removeItem("invest_user")
+        } catch (err) {
+            console.log(err.response?.data?.detail ?? "Could not reach server")
+        }
+    }
 
 
 
@@ -187,19 +215,22 @@ const InvestAuthProvider = ({ children }) => {
         }
     }, [RefreshToken])
 
+    useEffect(() => {getCurrentUser}, [])
+
     useEffect(() => {
-        getCurrentUser()
+        if(!userData?.id) return;
         handleFetchPlans();
         handleFetchUserWallet();
-        handleFetchUserProfits()
-        handleFetchUserInvestments()
+        handleFetchUserProfits();
+        handleFetchUserInvestments();
+        handleFetchUserCompletedWithdrawals();
         handleFetchUserWithdrawals();
-    }, [])
+    }, [userData?.id])
 
 
 
     return (
-        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser, SaveUserData, handleAxiosError, plans, handleFetchPlans, wallet, withdrawals, investments, profits }}>
+        <AuthContext.Provider value={{ errorMessage, loading, userData, getCurrentUser, SaveUserData, handleAxiosError, plans, handleFetchPlans, wallet, withdrawals, investments, profits, completedWithdrawals, handleFetchUserCompletedWithdrawals, handleFetchUserProfits, handleFetchUserWallet, handleFetchUserWithdrawals, handleFetchUserInvestments, logout }}>
             {children}
         </AuthContext.Provider>
     )

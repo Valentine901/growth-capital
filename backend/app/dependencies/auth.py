@@ -10,6 +10,8 @@ from models.tables import VerificationToken
 from datetime import timedelta, timezone, datetime
 import uuid, random 
 
+from starlette.requests import HTTPConnection
+
 class BaseAuth:
 
     @staticmethod
@@ -49,7 +51,7 @@ class BaseAuth:
         return token_data
 
     @staticmethod
-    def get_current_user(request: Request, db: Session = Depends(get_db)):
+    def get_current_user(request: HTTPConnection, db: Session = Depends(get_db)):
         token = request.cookies.get("access_token")
 
         if not token or token is None:
@@ -66,7 +68,7 @@ class BaseAuth:
         return user
     
     @staticmethod
-    def get_tesla_current_user(request: Request, db: Session = Depends(get_db)):
+    def get_tesla_current_user(request: HTTPConnection, db: Session = Depends(get_db)):
         token = request.cookies.get("access_token")
 
         if not token or token is None:

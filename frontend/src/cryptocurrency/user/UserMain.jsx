@@ -4,10 +4,10 @@ import { useInvestAuth } from "../context/AuthContext";
 
 
 const UserMain = ({ setName }) => {
-    const { wallet, withdrawals, investments, profits } = useInvestAuth();
+    const { wallet, completedWithdrawals, investments, profits } = useInvestAuth();
     const walletBalance = Number(wallet?.balance || 0.00);
 
-    const totalWithdrawnAmount = withdrawals.reduce((total, object) => {
+    const totalWithdrawnAmount = completedWithdrawals.reduce((total, object) => {
         return total += Number(object.amount)
     }, 0);
 

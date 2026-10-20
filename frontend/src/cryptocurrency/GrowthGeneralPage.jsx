@@ -69,9 +69,9 @@ const GrowthGeneralPage = () => {
             {/* Footer */}
             <Footer />
 
-            <button className="fixed bottom-7 left-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-110 hover:bg-green-400">
+            <a href="/invest/login" className="fixed bottom-7 left-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:scale-110 hover:bg-green-400">
                 <MessageCircle size={28} />
-            </button>
+            </a>
         </div>
     )
 }

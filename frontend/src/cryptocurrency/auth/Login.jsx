@@ -166,6 +166,7 @@ const Login = () => {
                         </button>
 
                         <button type="button" onClick={() => navigate("/invest/register")} className="w-full py-3.5 mt-4 rounded-xl border-amber-400/30 hover:border-amber-300/80 transition-all duration-300  font-extrabold text-center shadow-lg shadow-amber-400/10 border text-gray-100 cursor-pointer">Create an account</button>
+                        <a href="/investment" className="text-sm hover:text-amber-300 transition-all duration-300 cursor-pointer">Back home</a>
                     </form>
                 </div>
             </div>

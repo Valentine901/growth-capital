@@ -1,5 +1,5 @@
 from pydantic import BaseModel 
-from models.enums import PaymentMethods
+from models.enums import PaymentMethods, TransactionStatus
 import uuid
 from datetime import datetime 
 
@@ -15,6 +15,7 @@ class WithdrawalResponse(BaseModel):
     user_id: uuid.UUID
     amount: float 
     payment_method: PaymentMethods
+    payment_status: TransactionStatus
 
     class Config:
         from_attributes = True

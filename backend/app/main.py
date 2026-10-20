@@ -11,6 +11,7 @@ from routers.invest.transaction import router as transaction_router
 from routers.invest.wallet import router as wallet_router
 from routers.invest.withdrawal import router as withdrawal_router
 from routers.invest.investment import router as invest_router
+from routers.invest.support import router as support
 from routers.invest.profit import router as profit_router
 # tesla
 from routers.tesla.tesla_user import router as tesla_user_router
@@ -27,6 +28,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+app.include_router(support)
 app.include_router(wallet_router)
 app.include_router(profit_router)
 app.include_router(deposit_router)

@@ -29,10 +29,23 @@ async def update_transaction_status(transaction_id: int, payment_status: Transac
     transaction = BaseTransaction.get_transaction(transaction_id=transaction_id, db=db)
     if transaction is None:
         BaseErrorException.not_found("Transaction data not found")
+    previous_status = transaction.payment_status
+
+    # nothing to do if the status isn't changing
+    if previous_status == payment_status:
+        return transaction
+
+    # don't allow moving a completed withdrawal to another status
+    if previous_status == TransactionStatus.COMPLETED:
+        BaseErrorException.bad_request("Transaction already completed")
+
     updated_transaction = BaseTransaction.update_user_transaction_status(transaction=transaction, payment_status=payment_status, db=db)
-    
+    if not updated_transaction:
+        BaseErrorException.internal_server_error("Failed to updated transaction status")
     if transaction.payment_status == TransactionStatus.COMPLETED:
         wallet = BaseWallet.get_wallet(user_id=updated_transaction.user_id, db=db)
+        if wallet is None:
+            BaseErrorException.not_found("Wallet not found")
         BaseWallet.increment(amount=float(updated_transaction.amount), wallet=wallet, db=db)
     return updated_transaction
 

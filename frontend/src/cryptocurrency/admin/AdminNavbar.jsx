@@ -15,7 +15,6 @@ const AdminNavbar = ({ isMobileSidebar, setIsMobileSidebar }) => {
       </div>
       
       <div className='flex items-center gap-3'>
-        <button className=''>New Plan</button>
         <div className='w-8 h-8 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-xs font-bold text-amber-400'>
           AD
         </div>

@@ -22,3 +22,4 @@ class TransactionType(str, enum.Enum):
     DEPOSIT = "deposit"
     INVESTMENT = "investment"
     PROFIT = "profit"
+    WITHDRAWAL = "withdrawal"

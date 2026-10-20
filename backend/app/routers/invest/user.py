@@ -23,6 +23,11 @@ CurrentUser = Annotated[User, Depends(BaseAuth.get_current_user)]
 async def get_logged_in_user(current_user: CurrentUser):
     return current_user
 
+@router.post("/logout")
+async def logout_user(response: Response):
+    response.delete_cookie(key="access_token", secure=False, httponly=True, samesite="lax")
+    response.delete_cookie(key="refresh_token", secure=False, httponly=True, samesite="lax")
+
 @router.get("/refresh-token")
 async def api_refresh_token(request: Request, response: Response):
     token = request.cookies.get("refresh_token")

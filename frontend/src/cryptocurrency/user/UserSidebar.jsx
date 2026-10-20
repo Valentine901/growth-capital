@@ -1,12 +1,16 @@
 import React from 'react';
 import { LayoutDashboard, LogOut, X, ArrowUpFromLine, ArrowDownToLine, UserRoundPlus, Receipt, TrendingUp, LineChart } from "lucide-react";
+import { useInvestAuth } from '../context/AuthContext';
+
 
 const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => {
+const {handleFetchUserCompletedWithdrawals, handleFetchUserProfits, handleFetchUserWallet, handleFetchUserWithdrawals, handleFetchUserInvestments, logout} = useInvestAuth();
+
 
   const Items = [
-    { name: "dashboard", icon: <LayoutDashboard /> },
-    { name: "profit", icon: <LineChart /> },
-    { name: "invest", icon: <TrendingUp /> },
+    { name: "dashboard", icon: <LayoutDashboard />, click: ()=>{handleFetchUserCompletedWithdrawals(); handleFetchUserProfits(); handleFetchUserWallet(); handleFetchUserWithdrawals(); handleFetchUserInvestments() } },
+    { name: "profit", icon: <LineChart />, click: ()=>{handleFetchUserProfits() } },
+    { name: "invest", icon: <TrendingUp />, click: ()=>{handleFetchUserInvestments()} },
     { name: "withdrawal", icon: <ArrowUpFromLine /> },
     { name: "deposit", icon: <ArrowDownToLine /> },
     { name: "transactions", icon: <Receipt /> },
@@ -28,7 +32,7 @@ const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => 
 
             return (
               <div key={item.name}
-                onClick={() => setName(item.name)}
+                onClick={() => {setName(item.name); item.click()}}
                 className={`flex gap-4 p-3 border border-amber-300/20 ${isName ? "border-amber-300/50 text-amber-300/80" : null} rounded-lg hover:text-amber-300/80 hover:border-amber-300/50 transition-all duration-300`}>
                 {item.icon}
                 <span>{item.name}</span>
@@ -38,7 +42,7 @@ const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => 
 
         </div>
 
-        <div className='flex mx-auto items-center absolute bottom-5 left-5 right-5 justify-center border border-amber-300 gap-2 py-3 px-12 rounded-lg text-white font-semibold cursor-pointer hover:bg-amber-400 hover:text-black transition-colors'>
+        <div onClick={() => logout()} className='flex items-center justify-center bg-red-500 gap-2 py-3 px-12 rounded-lg text-white font-semibold cursor-pointer hover:bg-red-600 transition-colors mb-2'>
           <LogOut size={20} />
           <button>Logout</button>
         </div>
@@ -89,7 +93,7 @@ const UserSidebar = ({ isMobileSidebar, setIsMobileSidebar, name, setName }) => 
         </div>
 
 
-        <div className='flex items-center justify-center bg-red-500 gap-2 py-3 px-12 rounded-lg text-white font-semibold cursor-pointer hover:bg-red-600 transition-colors mb-2'>
+        <div onClick={() => logout()} className='flex items-center justify-center bg-red-500 gap-2 py-3 px-12 rounded-lg text-white font-semibold cursor-pointer hover:bg-red-600 transition-colors mb-2'>
           <LogOut size={20} />
           <button>Logout</button>
         </div>

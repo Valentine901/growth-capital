@@ -24,13 +24,12 @@ const formatDate = (value) => {
 };
 
 const WithdrawalCard = ({ withdraw }) => {
-  const { amount, created_at} = withdraw;
+  const { amount, created_at, payment_status} = withdraw;
 
   const type = String("withdrawal").toLowerCase();
-  const status = String("completed").toLowerCase();
 
   const typeInfo = TYPE_STYLES[type] || { icon: "•", style: "bg-zinc-800 text-zinc-400" };
-  const statusStyle = STATUS_STYLES[status] || "bg-zinc-800 text-zinc-400 border-zinc-700";
+  const statusStyle = STATUS_STYLES[payment_status.toLowerCase()] || "bg-zinc-800 text-zinc-400 border-zinc-700";
 
   const formattedAmount = Number(amount).toLocaleString("en-US", {
     style: "currency",
@@ -55,7 +54,7 @@ const WithdrawalCard = ({ withdraw }) => {
         <span
           className={`px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider ${statusStyle}`}
         >
-          {status || "unknown"}
+          {payment_status || "unknown"}
         </span>
       </div>
 

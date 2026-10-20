@@ -34,7 +34,7 @@ async def create_investment(data: CreateInvestment, current_user: CurrentUser, d
     BaseWallet.decrement(amount=data.amount, wallet=wallet, db=db)
 
     created_at = datetime.now(timezone.utc)
-    next_profit_at = created_at + timedelta(minutes=5)
+    next_profit_at = created_at + timedelta(minutes=2)
     expires_at = created_at + timedelta(days=7)
 
     investment_data = {"user_id": current_user.id, "amount": data.amount, "plan_id": data.plan_id, "created_at": created_at, "next_profit_at": next_profit_at, "expires_at": expires_at}
